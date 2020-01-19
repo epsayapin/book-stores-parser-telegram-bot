@@ -28,8 +28,9 @@ class SearchResultsPagesTest extends TestCase
                         "Достоевский"];
         $searchQuery = $searchQuerys[rand(0, count($searchQuerys) - 1)];
 
-        $response = $this->json('GET', 'searchresults', ['query' => $searchQuery]);
-        $this->assertEquals($response, $searchQuery . "1990");
+        $response = $this->post("/searchresults", ["query" => $searchQuery]);
+        $result = $response["result"];
+        $this->assertEquals(24, count($result));
 
     }
 }
