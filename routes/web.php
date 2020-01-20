@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 
 Route::post('/searchresults', "SearchResultsController@getResults");
+Route::get('/bookslists', "BooksListsController@getBooksList");
