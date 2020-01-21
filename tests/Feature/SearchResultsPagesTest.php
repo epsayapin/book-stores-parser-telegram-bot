@@ -28,9 +28,10 @@ class SearchResultsPagesTest extends TestCase
                         "Достоевский"];
         $searchQuery = $searchQuerys[rand(0, count($searchQuerys) - 1)];
 
-        $response = $this->post("/searchresults", ["query" => $searchQuery]);
-        $result = $response["result"];
-        $this->assertEquals(24, count($result));
+        $response = $this->json("GET", "/bookslists", ["query" => $searchQuery]);
+       //$jsonString = $response->getBody();
+      //  $bodyAsArray = json_decode($jsonString, true);
+        $this->assertEquals(24, count(json_decode($response->getContent(), true)));
 
     }
 }

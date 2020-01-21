@@ -6,6 +6,3 @@
 
 </ul>
 
-<h2>Crawler</h2>
-
-{{ $crawler->html() }}
