@@ -1,5 +1,5 @@
 <?php 
-namespace App\Parsing;
+namespace App\Library;
 
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -26,12 +26,7 @@ class ChcnnParsing
 		{
 			$bookslist[] = $array->eq($i)->text();
 		}
-/*	
-		foreach($array as $product)W
-		{
-			$bookslist[] =  $product->text();
-		}
-*/
+
 
 		return $bookslist;
 

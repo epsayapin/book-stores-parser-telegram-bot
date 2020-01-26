@@ -13,12 +13,6 @@ class BookListsTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
 
     public function testSearchRequestResponde()
     {
@@ -28,8 +22,9 @@ class BookListsTest extends TestCase
                         "Достоевский"];
         $searchQuery = $searchQuerys[rand(0, count($searchQuerys) - 1)];
 
-        $response = $this->json("GET", "/bookslists", ["query" => $searchQuery]);
+        $response = $this->json("GET", "/booklists", ["query" => $searchQuery]);
         $this->assertEquals(24, count(json_decode($response->getContent(), true)));
 
     }
+
 }

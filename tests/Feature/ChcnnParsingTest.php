@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-require_once 'app/Parsing/Chcnn.php';
+require_once 'app/Library/ChcnnParsing.php';
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-//se app\Parsing\Chchnn;
+
 
 class ChcnnParsingTest extends TestCase
 {
@@ -17,6 +17,13 @@ class ChcnnParsingTest extends TestCase
      * @return void
      */
 
+        public function testChcnnParsingClassShouldExists()
+    {
+        
+        $this->assertTrue(class_exists('\App\Library\ChcnnParsing'));
+
+    }
+
     public function testGetBookListMustReturnBookList()
     {
 
@@ -25,7 +32,7 @@ class ChcnnParsingTest extends TestCase
 
         $searchQuery = $searchQuerys[rand(0, count($searchQuerys) - 1)];
 
-        $bookList = \ChcnnParsing::getBookList($searchQuery);
+        $bookList = \App\Library\ChcnnParsing::getBookList($searchQuery);
 
        //$jsonString = $response->getBody();
       //  $bodyAsArray = json_decode($jsonString, true);

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-require_once '/app/Parsing/Chcnn.php';
+//require_once "app/Parsing/Chcnn.php";
 
 use Illuminate\Http\Request;
-use App\Parsing\ChcnnParsing;
+use App\Library\ChcnnParsing;
+
+
 
 //require 'app/Parsing/Chcnn.php';
 

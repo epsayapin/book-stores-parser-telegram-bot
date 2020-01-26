@@ -17,4 +17,4 @@ Route::get('/', function () {
 
 
 
-Route::get('/bookslists', "BookListsController@create");
+Route::get('/booklists', "BookListsController@create");
