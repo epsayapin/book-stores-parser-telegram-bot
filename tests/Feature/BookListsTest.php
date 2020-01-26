@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class SearchResultsPagesTest extends TestCase
+class BookListsTest extends TestCase
 {
     /**
      * A basic feature test example.
@@ -29,8 +29,6 @@ class SearchResultsPagesTest extends TestCase
         $searchQuery = $searchQuerys[rand(0, count($searchQuerys) - 1)];
 
         $response = $this->json("GET", "/bookslists", ["query" => $searchQuery]);
-       //$jsonString = $response->getBody();
-      //  $bodyAsArray = json_decode($jsonString, true);
         $this->assertEquals(24, count(json_decode($response->getContent(), true)));
 
     }

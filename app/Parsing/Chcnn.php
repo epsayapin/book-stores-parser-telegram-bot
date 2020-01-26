@@ -1,21 +1,12 @@
-<?php
+<?php 
+namespace App\Parsing;
 
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use Symfony\Component\DomCrawler\Crawler;
 
-class BooksListsController extends Controller
+class ChcnnParsing
 {
-    //
-
-	public function getBooksList(Request $request): array
+	public static function getBookList(String $query): array
 	{
-		$querys = ['Ведьмак', 'Портнягин', 'Сорокин', 'Гарри Поттер',
-					'Стив Джобс', 'Пушкин', 'Достоевский', 'Алексей Иванов', 'Пелевин', 'Воннегут'];
-		$i = rand(0, 9);
-
-		$query = $request["query"];
 
 		$requestURL = "https://chaconne.ru/search/?q=" . urlencode($query); 
 
