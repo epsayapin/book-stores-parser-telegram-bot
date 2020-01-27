@@ -5,12 +5,14 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ChcnnParsing
 {
-	public static function getBookList(String $query): array
+	public static function getBookList(String $query, int $currentPage = 0): array
 	{
 
 		$requestURL = "https://chaconne.ru/search/?q=" . urlencode($query); 
+		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
 
-		$bookslist = [];
+		$result = [];
+		$booklist = [];
 		
 		$doc = new \DOMDocument();
 		libxml_use_internal_errors(true);
@@ -20,15 +22,23 @@ class ChcnnParsing
 		libxml_use_internal_errors(false);
 		
 		$crawler = new Crawler($str);
-		$array = $crawler->filter(".products .row .product .title");
-		$count = count($array);
-		for($i=0; $i<$count; $i++)
+		$productsArray = $crawler->filter(".products .row .product .title");
+		$productsCount = count($productsArray);
+		$pagesCount = $crawler->filter(".paginator .links a")->last()->html();
+
+
+
+
+		for($i=0; $i<$productsCount; $i++)
 		{
-			$bookslist[] = $array->eq($i)->text();
+			$booklist[] = $productsArray->eq($i)->text();
 		}
 
-
-		return $bookslist;
+		$result[] = ["bookList" => $booklist]; 
+		$result[] = ["currentPage" => $currentPage];
+		$result[] = ["pagesCount" => $pagesCount];
+		$result[] = $requestURL;
+		return $result;
 
 	}
 

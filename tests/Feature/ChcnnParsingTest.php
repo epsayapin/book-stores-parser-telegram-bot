@@ -32,12 +32,15 @@ class ChcnnParsingTest extends TestCase
 
         $searchQuery = $searchQuerys[rand(0, count($searchQuerys) - 1)];
 
-        $bookList = \App\Library\ChcnnParsing::getBookList($searchQuery);
+        $result = \App\Library\ChcnnParsing::getBookList($searchQuery);
 
        //$jsonString = $response->getBody();
       //  $bodyAsArray = json_decode($jsonString, true);
-        $this->assertEquals(24, count($bookList));
-
+        $this->assertTrue(isset($result[0]{"bookList"}));
+        $this->assertTrue(isset($result[1]['currentPage']));
+        $this->assertTrue(isset($result[2]["pagesCount"]));
+        $this->assertEquals(24, count($result[0]["bookList"]));
+        $this->assertGreaterThan(0, $result[2]["pagesCount"]);
 
     }
 }
