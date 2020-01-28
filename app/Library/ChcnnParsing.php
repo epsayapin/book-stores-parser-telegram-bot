@@ -8,7 +8,7 @@ class ChcnnParsing
 	public static function getBookList(String $query, int $currentPage = 0): array
 	{
 
-		$requestURL = "https://chaconne.ru/search/?q=" . urlencode($query); 
+		$requestURL = env('CHCNN_SEARCH_URL') . urlencode($query); 
 		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
 
 		$result = [];
@@ -40,6 +40,27 @@ class ChcnnParsing
 		$result[] = $requestURL;
 		return $result;
 
+	}
+
+	public static function getBookCard(String $bookCode): array
+	{
+		$bookCard = [];
+
+		//$requestURL = env("CHCNN_BOOKCARD_URL");
+		$requestURL = __DIR__ . '/../../tests/SearchPageExample/ChcnnMain.html';
+
+		$doc = new \DOMDocument();
+		libxml_use_internal_errors(true);
+		$doc->loadHTMLFile($requestURL);
+		$str = $doc->saveHTML();
+
+		$crawler = new Crawler($str);
+
+		//$bookCard["title"] = $crawler->filter('.row h1')->text();
+		$bookCard["author"] = $crawler->filter('a.author')->text();
+		$bookCard["price"] = $crawler->filter('.price strong ')->text();
+
+		return $bookCard;
 	}
 
 }

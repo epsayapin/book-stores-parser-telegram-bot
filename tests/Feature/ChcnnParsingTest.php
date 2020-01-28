@@ -17,6 +17,11 @@ class ChcnnParsingTest extends TestCase
      * @return void
      */
 
+        public function testChcnnEnvShouldExists()
+        {
+            $this->assertTrue(!(env('CHCNN_SEARCH_URL') == ""));
+        }
+
         public function testChcnnParsingClassShouldExists()
     {
         
@@ -24,7 +29,7 @@ class ChcnnParsingTest extends TestCase
 
     }
 
-    public function testGetBookListMustReturnBookList()
+    public function XXXtestGetBookListMustReturnBookList()
     {
 
         $searchQuerys = ['Ведьмак', 'Портнягин', 'Сорокин', 'Гарри Поттер',
@@ -42,5 +47,19 @@ class ChcnnParsingTest extends TestCase
         $this->assertEquals(24, count($result[0]["bookList"]));
         $this->assertGreaterThan(0, $result[2]["pagesCount"]);
 
+    }
+
+    public function testgetBookCardShouldReturnBookCard()
+    {
+        $bookcard = \App\Library\ChcnnParsing::getBookCard('101');
+
+        $this->assertTrue(isset($bookcard["title"]));
+        $this->assertNotEquals("", $bookcard["title"]);
+        
+        $this->assertTrue(isset($bookcard["author"]));
+        $this->assertNotEquals("", $bookcard["author"]);
+
+        $this->assertTrue(isset($bookcard["price"]));
+        $this->assertNotEquals("", $bookcard["price"]);
     }
 }
