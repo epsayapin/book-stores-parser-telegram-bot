@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 require_once 'app/Library/ChcnnParsing.php';
 
+use App\Library\ChcnnParsing as ChcnnParsing;
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -17,9 +19,9 @@ class ChcnnParsingTest extends TestCase
      * @return void
      */
 
-        public function testChcnnEnvShouldExists()
+        public function testChcnnSearchUrlExists()
         {
-            $this->assertTrue(!(env('CHCNN_SEARCH_URL') == ""));
+            $this->assertTrue(!(ChcnnParsing::$search_url == ""));
         }
 
         public function testChcnnParsingClassShouldExists()
@@ -53,13 +55,18 @@ class ChcnnParsingTest extends TestCase
     {
         $bookcard = \App\Library\ChcnnParsing::getBookCard('101');
 
-        $this->assertTrue(isset($bookcard["title"]));
-        $this->assertNotEquals("", $bookcard["title"]);
-        
-        $this->assertTrue(isset($bookcard["author"]));
-        $this->assertNotEquals("", $bookcard["author"]);
+        $propertyList = ['author', 'price', 'title', 'code', 'series', 'pages' ];
 
-        $this->assertTrue(isset($bookcard["price"]));
-        $this->assertNotEquals("", $bookcard["price"]);
+        foreach($propertyList as $property)
+        {
+            $this->assertTrue(isset($bookcard[$property]), "\n -- $property don't exists");
+            if (!($property == 'author'))
+            {
+            $this->assertNotEquals("", $bookcard[$property], "\n -- $property empty");
+            }
+        }
+
+        $this->assertGreaterThan(0, count($bookcard['author']));
+    
     }
 }

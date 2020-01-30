@@ -5,10 +5,12 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ChcnnParsing
 {
+	public static $search_url = 'https://chaconne.ru/search/?q=';
+
 	public static function getBookList(String $query, int $currentPage = 0): array
 	{
 
-		$requestURL = env('CHCNN_SEARCH_URL') . urlencode($query); 
+		$requestURL = self::$search_url . urlencode($query); 
 		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
 
 		$result = [];
@@ -45,9 +47,10 @@ class ChcnnParsing
 	public static function getBookCard(String $bookCode): array
 	{
 		$bookCard = [];
+		$bookCard["author"] = [];
 
 		//$requestURL = env("CHCNN_BOOKCARD_URL");
-		$requestURL = __DIR__ . '/../../tests/SearchPageExample/ChcnnMain.html';
+		$requestURL = __DIR__ . '/../../tests/SearchPageExample/BookCardWitcher.html';
 
 		$doc = new \DOMDocument();
 		libxml_use_internal_errors(true);
@@ -56,9 +59,12 @@ class ChcnnParsing
 
 		$crawler = new Crawler($str);
 
-		//$bookCard["title"] = $crawler->filter('.row h1')->text();
-		$bookCard["author"] = $crawler->filter('a.author')->text();
+
+		$bookCard["title"] = $crawler->filter('.product_text h1')->text();
+		$bookCard["author"][] = $crawler->filter('a.author')->text();
 		$bookCard["price"] = $crawler->filter('.price strong ')->text();
+		$bookCard["code"] =	$crawler->filter('.product_text table tr')->first()->filter('td')->last()->text();
+
 
 		return $bookCard;
 	}
