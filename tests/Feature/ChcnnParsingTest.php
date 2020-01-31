@@ -53,9 +53,27 @@ class ChcnnParsingTest extends TestCase
 
     public function testgetBookCardShouldReturnBookCard()
     {
-        $bookcard = \App\Library\ChcnnParsing::getBookCard('101');
 
-        $propertyList = ['author', 'price', 'title', 'code', 'series', 'pages' ];
+        $bookCodes = [
+                    '2617830',
+                    '4052565',
+                    '4052340',
+                    '4052821',
+                    '4000529',
+                    '3978197',
+                    '4000527',
+                    '2113226',
+                    '3791720',
+                    '3869778'
+            ];
+
+        $code = $bookCodes[rand(0, count($bookCodes) - 1)];
+
+        $bookcard = \App\Library\ChcnnParsing::getBookCard($code);
+
+        echo "Used code $code";
+
+        $propertyList = ['author', 'price', 'title', 'code', 'coverFormat', 'pages' ];
 
         foreach($propertyList as $property)
         {

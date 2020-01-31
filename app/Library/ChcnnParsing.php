@@ -6,6 +6,7 @@ use Symfony\Component\DomCrawler\Crawler;
 class ChcnnParsing
 {
 	public static $search_url = 'https://chaconne.ru/search/?q=';
+	public static $bookcard_url = 'https://chaconne.ru/product/';
 
 	public static function getBookList(String $query, int $currentPage = 0): array
 	{
@@ -49,8 +50,8 @@ class ChcnnParsing
 		$bookCard = [];
 		$bookCard["author"] = [];
 
-		//$requestURL = env("CHCNN_BOOKCARD_URL");
-		$requestURL = __DIR__ . '/../../tests/SearchPageExample/BookCardWitcher.html';
+		$requestURL = self::$bookcard_url . $bookCode . '/';
+		//$requestURL = __DIR__ . '/../../tests/SearchPageExample/BookCardWitcher.html';
 
 		$doc = new \DOMDocument();
 		libxml_use_internal_errors(true);
@@ -65,6 +66,24 @@ class ChcnnParsing
 		$bookCard["price"] = $crawler->filter('.price strong ')->text();
 		$bookCard["code"] =	$crawler->filter('.product_text table tr')->first()->filter('td')->last()->text();
 
+		$productTable = $crawler->filter('.product_text table tr td');
+		$countRows = count($productTable);
+
+		for($i = 0; $i < $countRows; $i++)
+		{
+			switch ($productTable->eq($i)->text()) {
+				case 'Кол-во страниц':
+					# code...
+				$bookCard["pages"] = $productTable->eq($i+1)->text();
+					break;
+				case 'Оформление':
+					$bookCard["coverFormat"] = $productTable->eq($i+1)->text();
+				default:
+					# code...
+					break;
+			}
+
+		}
 
 		return $bookCard;
 	}
