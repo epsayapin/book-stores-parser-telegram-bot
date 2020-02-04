@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Поиск</title>
+	<meta name="description" content="Интернет магазин Чакона. Купить книги, канцтовары, школьную форму, настольные игры, товары для творчества и коллекционирования в Самаре, Тольятти, Сызрани, Новокуйбышевске.">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<meta name="verify-v1" content="GHyl+SoxwNckTpfvRZtQKZ3qdF0SBXVQLcpuR0eP4Tk=">
+	<meta name="yandex-verification" content="872c43d3c57e98b6">
+
+	<meta property="og:title" content="Поиск">
+    <meta property="og:description" content="Интернет магазин Чакона. Купить книги, канцтовары, школьную форму, настольные игры, товары для творчества и коллекционирования в Самаре, Тольятти, Сызрани, Новокуйбышевске.">
+    <meta property="og:image" content="https://chaconne.ru/i/logo2.svg">
+    <meta property="og:url" content="https://chaconne.ru/search/?q=Cobain">
+    <meta property="og:site_name" content="Интернет магазин Чакона">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:type" content="website">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+
+	
+
+	<link rel="shortcut icon" href="https://chaconne.ru/favicon.ico">
+
+	<link rel="apple-touch-icon" sizes="57x57" href="https://chaconne.ru/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="https://chaconne.ru/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="https://chaconne.ru/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="https://chaconne.ru/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="https://chaconne.ru/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="https://chaconne.ru/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="https://chaconne.ru/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="https://chaconne.ru/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://chaconne.ru/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="https://chaconne.ru/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://chaconne.ru/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="https://chaconne.ru/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://chaconne.ru/favicon-16x16.png">
+	<link rel="manifest" href="https://chaconne.ru/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+    <link href="SinglePageResult_files/bootstrap.css" rel="stylesheet">
+    <link href="SinglePageResult_files/font-awesome.css" rel="stylesheet">
+    <link href="SinglePageResult_files/fonts.css" rel="stylesheet">
+    <link href="SinglePageResult_files/site_components.css" rel="stylesheet">
+	
+	<script type="text/javascript" async="" src="SinglePageResult_files/ec.js"></script><script type="text/javascript" async="" src="SinglePageResult_files/linkid.js"></script><script async="" src="SinglePageResult_files/tag.js"></script><script type="text/javascript" async="" src="SinglePageResult_files/analytics.js"></script><script async="" src="SinglePageResult_files/gtm.js"></script><script src="SinglePageResult_files/jquery.js"></script>
+	<script src="SinglePageResult_files/bootstrap.js"></script>
+	<script src="SinglePageResult_files/jquery_002.js"></script>
+	<script src="SinglePageResult_files/checkForm.js"></script>
+	<script src="SinglePageResult_files/all.js"></script>
+
+	
+	<!--[if lt IE 8]><script>location='/ie/'</script><![endif]-->
+	<!--[if lt IE 9]>
+        <script src="js/respond.min.js"></script>
+        <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+
+<script charset="windows-1251">
+dataLayer = [];
+
+
+var gaAPI = {
+	addToCart: function (id, amount) {
+		try {
+			$.get('/ajax/ajax.php', {ga_item:id, amount:amount}, function(res) {
+				dataLayer.push({
+					"event": "addToCart",
+					"ecommerce": {
+					  "currencyCode": "RUB",
+					  "add": {"products": res}
+					}
+				});
+			}, "json");
+		}
+		catch (err) {
+			console.log(err);
+		}
+	},
+	removeFromCart: function (id, amount) {
+		try {
+			$.get('/ajax/ajax.php', {ga_item:id, amount:amount}, function(res) {
+				dataLayer.push({
+					"event": "removeFromCart",
+					"ecommerce": {
+					  "currencyCode": "RUB",
+					  "remove": {"products": res}
+					}
+				});
+			}, "json");
+		}
+		catch (err) {
+			console.log(err);
+		}
+	}
+};
+</script>
+
+		<!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-PG9X783');</script>
+	<!-- End Google Tag Manager -->
+	
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PG9X783"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+    <div class="container page_container">
+		<header id="mobile_header" class="visible-xs">
+	<div id="menu_xs" class="row">
+		<div class="col-xs-2">
+			<a href="https://chaconne.ru/">
+				<img src="SinglePageResult_files/favicon.svg" width="20" height="20">
+				<br>
+				<span>Главная</span>
+			</a>
+		</div>
+		<div class="col-xs-2">
+			<a href="javascript:" id="catalog_menu_mob_btn">
+				<i class="fa fa-bars fa-lg"></i><br>
+				<span>Каталог</span>
+			</a>
+		</div>
+		<div class="col-xs-2">
+			<a href="https://chaconne.ru/info/discount.php">
+				<i class="fa fa-percent fa-lg"></i>
+				<br>
+				<span>Скидки</span>
+			</a>
+		</div>
+		<div class="col-xs-2">
+			<a href="https://chaconne.ru/sale/">
+				<i class="fa fa-tag fa-flip-horizontal"></i>
+				<br>
+				<span>Акции</span>
+			</a>
+		</div>
+				<div class="col-xs-2">
+			<a href="javascript:" onclick="$('#lk_xs').toggleClass('shown')">
+				<i class="fa fa fa-vcard-o fa-lg"></i><br>
+				<span>Личное</span>
+			</a>
+		</div>
+		<div class="col-xs-2">
+			<a href="https://chaconne.ru/cart.php">
+				<i class="fa fa-shopping-cart fa-lg"></i>
+				<br>
+				<span>Корзина</span>
+			</a>
+		</div>
+	</div>
+
+	<div id="sform_xs"></div>
+
+	<div id="catalog_menu_xs"></div>
+
+	
+	<div id="lk_xs">
+		
+<div class="catalog_menu">
+	<ul class="menu">
+				<li>
+			<a class="end " href="https://chaconne.ru/user/index.php">Мои заказы</a>
+		</li>
+				<li>
+			<a class="end " href="https://chaconne.ru/user/reserve.php">Отложенные в филиале</a>
+		</li>
+				<li>
+			<a class="end " href="https://chaconne.ru/user/defer.php">Закладки</a>
+		</li>
+				<li>
+			<a class="end " href="https://chaconne.ru/user/notice.php">Уведомления</a>
+		</li>
+				<li>
+			<a class="end " href="https://chaconne.ru/user/card.php">Карта клиента</a>
+		</li>
+				<li>
+			<a class="end " href="https://chaconne.ru/user/preferences.php">Настройки</a>
+		</li>
+				<li>
+			<a href="https://chaconne.ru/exit.php" class="end">Выход</a>
+		</li>
+	</ul>
+</div>	</div>
+</header>
+
+<script>
+$('#menu_xs a').click(function() {
+	$('#menu_xs a.active').not(this).click();
+	$(this).toggleClass('active');
+}).each(function() {
+	if ($(this).attr('href') === location.pathname) {
+		$(this).addClass('active');
+		return false;
+	}
+});
+</script>
+        <header class="hidden-xs">
+            <section class="main">
+                <div class="row">
+
+                    <div class="col-sm-3">
+                        <a href="https://chaconne.ru/" class="logo">
+                            <img src="SinglePageResult_files/logo2.svg">
+                        </a>
+                    </div>
+
+                    <div class="col-sm-4 col-md-5 pad0">
+						
+<div class="phone" style="margin-right:10px">
+	<a class="unstyled" href="tel:+7 (846) 331-22-33">
+		<img src="SinglePageResult_files/phone.svg" width="15" height="15">
+		+7 (846) 331-22-33	</a>
+	<p>Самара с 10:00 до 20:00</p>
+</div>
+<div class="phone">
+	<a href="tel:+7 (8482) 55-55-88">
+		<img src="SinglePageResult_files/phone.svg" width="15" height="15">
+		+7 (8482) 55-55-88
+	</a>
+	<p>Тольятти с 10:00 до 20:00</p>
+</div>
+
+                    </div>
+
+					<div class="col-sm-5 col-md-4">
+
+						<div class="row">
+							<div class="col-xs-5" style="padding:5px 0">
+																	<a href="https://chaconne.ru/enter.php" class="unstyled">
+										<i class="fa fa-vcard-o" style="font-size:1.2em;vertical-align:-8%;"></i>&nbsp;&nbsp;Войти</a>
+															</div>
+
+							<div class="col-xs-7 pad0">
+								<div class="cart" id="cart">
+	<a href="https://chaconne.ru/cart.php" class="modal-toggle clearfix">
+		<img src="SinglePageResult_files/cart_icon.svg" width="32" height="32">
+		<span class="text">
+						В корзине пока пусто
+					</span>
+	</a>
+</div>							</div>
+						</div>
+
+					</div>
+
+
+                    <div class="col-xs-12 col-md-offset-3 col-md-9 hidden-xs pad0">
+                        <nav class="header-nav">
+                            <a href="https://chaconne.ru/info/payment.php">
+								<i class="fa fa-credit-card" style="font-size:1.3em;vertical-align:-8%;"></i>&nbsp;&nbsp;Оплата
+                            </a>
+                            <a href="https://chaconne.ru/info/delivery/">
+								<i class="fa fa-truck fa-flip-horizontal fa-lg"></i>&nbsp;&nbsp;Доставка
+                            </a>
+                            <a href="https://chaconne.ru/info/shops.php">
+								<i class="fa fa-shopping-bag" style="font-size:1.15em"></i>&nbsp;&nbsp;Наши магазины
+                            </a>
+                            <a href="https://chaconne.ru/info/discount.php">
+								<i class="fa fa-percent" style="font-size:1.2em;vertical-align:-7%;"></i>&nbsp;&nbsp;Скидки
+                            </a>
+                            <a href="https://chaconne.ru/sale/">
+								<i class="fa fa-tag fa-flip-horizontal" style="font-size:1.2em;vertical-align:-7%;"></i>&nbsp;&nbsp;Акции
+                            </a>
+                                                    </nav>
+                    </div>
+                </div>
+            </section>
+        </header>
+
+		<div id="sform_lg">
+			<form class="search" id="sform" action="/search/" onsubmit="return inCheck('#sform')">
+	<input id="search" name="q" type="text" class="form-control" placeholder="Введите для поиска слова, ISBN или код товара" maxlength="100" value="Cobain" autocomplete="off">
+	<button class="btn-clear hide visible-xs" type="button" id="srch_clr"><i class="fa fa-times"></i></button>
+	<button class="btn" type="submit"><i class="fa fa-search"></i></button>
+	<input type="checkbox" name="kat" id="srch_cat" value="0" class="dis">
+	<div class="xs-search-cat-label cgr dis">Искать в:</div>
+	<div class="custom_select dropdown">
+		<button class="form-control dropdown-toggle" data-toggle="dropdown" type="button">
+			<span class="text">Во всех разделах</span>
+		</button>
+		<ul id="srch_cat_list" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+<li><a tabindex="-1" href="javascript:;" class="srch-cat-0">Во всех разделах</a></li><li><a tabindex="-1" href="javascript:;" class="srch-cat-573">Книги</a></li><li><a tabindex="-1" href="javascript:;" class="srch-cat-548">Канцтовары</a></li><li><a tabindex="-1" href="javascript:;" class="srch-cat-4654">Мастерская увлечений</a></li><li><a tabindex="-1" href="javascript:;" class="srch-cat-4494">Развивающие игры и игрушки</a></li><li><a tabindex="-1" href="javascript:;" class="srch-cat-5785">Настольные игры</a></li><li><a tabindex="-1" href="javascript:;" class="srch-cat-4557">Пазлы</a></li><li><a tabindex="-1" href="javascript:;" class="srch-cat-4444">Товары для коллекционеров</a></li><li><a tabindex="-1" href="javascript:;" class="srch-cat-592">Календари</a></li><li><a tabindex="-1" href="javascript:;" class="srch-cat-4834">Магниты</a></li><li><a tabindex="-1" href="javascript:;" class="srch-cat-4836">Школьная форма</a></li>		</ul>
+	</div>
+</form>		</div>
+
+
+        <div class="page_content">
+			<div class="row">
+
+	<div class="col-sm-4 col-lg-3 grid">
+
+		<div id="catalog_menu_lg"><div id="catalog_menu" class="catalog_menu" style="height: 550px;">
+		<ul class="menu start" id="menucat0"><li>
+	<a class="gtm_menu_catalog cat573 next " data-id="573" href="javascript:">
+			Книги				</a>
+</li><li>
+	<a class="gtm_menu_catalog cat548 next " data-id="548" href="javascript:">
+			Канцтовары				</a>
+</li><li>
+	<a class="gtm_menu_catalog cat4654 next " data-id="4654" href="javascript:">
+			Мастерская увлечений				</a>
+</li><li>
+	<a class="gtm_menu_catalog cat4494 next " data-id="4494" href="javascript:">
+			Развивающие игры и игрушки				</a>
+</li><li>
+	<a class="gtm_menu_catalog cat5785 next " data-id="5785" href="javascript:">
+			Настольные игры				</a>
+</li><li>
+	<a class="gtm_menu_catalog cat4557 next " data-id="4557" href="javascript:">
+			Пазлы				</a>
+</li><li>
+	<a class="gtm_menu_catalog cat4444 next " data-id="4444" href="javascript:">
+			Товары для коллекционеров				</a>
+</li><li>
+	<a class="gtm_menu_catalog cat592 next " data-id="592" href="javascript:">
+			Календари				</a>
+</li><li>
+	<a class="gtm_menu_catalog cat4834 end " data-id="4834" href="https://chaconne.ru/category/4834/">
+			Магниты				</a>
+</li><li>
+	<a class="gtm_menu_catalog cat4836 next " data-id="4836" href="javascript:">
+			Школьная форма				</a>
+</li></ul>	</div></div>
+
+		
+		<div class="news last_news hidden-xs">
+	<h4>Новости</h4>
+	<article>
+				<div class="text">
+			<a href="https://chaconne.ru/news/1842/" class="title">Новый пункт выдачи заказов интернет-магазина в Самаре</a>
+			<p>Друзья! В недавно открывшемся магазине нашей сети (Минская, 25) 
+действует пункт самовывоза интернет-магазина. Филиал работает ежедневно,
+ без перерыва на обед. Время работы - 9:00-20:00. Ждем ваших заказов! </p>
+			<!--<strong>22.01.2020</strong>-->
+		</div>
+	</article>
+	<a href="https://chaconne.ru/news/">Показать все новости</a>
+</div>
+	</div>
+
+
+	<div class="col-sm-8 col-lg-9 grid">
+
+		
+
+				<div class="site_title catalog_page_title clearfix">
+			<h1>Поиск</h1>
+		</div>
+		
+
+		
+
+		<!--noindex-->
+<div class="filter">
+	<div class="top clearfix">
+
+		<ul class="views pull-right">
+	<li>Вид:</li>
+	<li>
+		<button class="btn active view-grid"><i class="fa fa-th"></i></button>
+		<button class="btn  view-list gtm_viewlist"><i class="fa fa-th-list gtm_viewlist"></i></button>
+	</li>
+</ul>
+		<div class="sort">
+			Сортировать по:
+
+			<div class="custom_select dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					<span class="text">релевантности</span><i class="fa fa-caret-down"></i>
+				</a>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+					<li><a rel="nofollow" tabindex="-1" class="activ" href="https://chaconne.ru/search/?q=Cobain">релевантности</a></li><li><a rel="nofollow" tabindex="-1" class="" href="https://chaconne.ru/search/?q=Cobain&amp;sort=popularity">продаваемости</a></li><li><a rel="nofollow" tabindex="-1" class="" href="https://chaconne.ru/search/?q=Cobain&amp;sort=name">названию</a></li><li><a rel="nofollow" tabindex="-1" class="" href="https://chaconne.ru/search/?q=Cobain&amp;sort=author">автору</a></li><li><a rel="nofollow" tabindex="-1" class="" href="https://chaconne.ru/search/?q=Cobain&amp;sort=price">возрастанию цены</a></li><li><a rel="nofollow" tabindex="-1" class="" href="https://chaconne.ru/search/?q=Cobain&amp;sort=price_desc">убыванию цены</a></li>				</ul>
+			</div>
+		</div>
+
+		<div class="divider visible-lg-inline-block"></div>
+		<br class="hidden-lg">
+
+		<label onclick="location='?q=Cobain&amp;nalich=2'">
+			<input type="checkbox">
+			есть в наличии
+		</label>
+
+	</div>
+</div>
+<!--/noindex-->
+
+		<div class="products ">
+
+			<div class="row">
+
+				
+<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 grid">
+	<div class="product ">
+				<a href="https://chaconne.ru/product/4027057/" class="img-container bg-item size-3x4" data-image-src="https://img.chaconne.ru/rsz/img/4027057_877307.[w300h350q90].jpg" itemprop="image" style="background-image: url(&quot;https://img.chaconne.ru/rsz/img/4027057_877307.[w300h350q90].jpg&quot;);"></a>
+		<a href="https://chaconne.ru/product/4027057/" class="title text-center">Elasticsearch, Kibana, Logstash и поисковые системы нового поколения</a>
+
+		<div class="grid-row-height text-center">
+		<i class="fa fa-user-circle-o author"></i> <a href="https://chaconne.ru/author/141815/" class="author">Шукла П.</a>		</div>
+
+					<div class="grid-row-height text-center">
+			<a href="https://chaconne.ru/izdatelstvo/13/" class="izdat">Питер</a>			</div>
+		
+		<div class="clearfix order">
+
+			
+				<div class="price"><strong>2&nbsp;046&nbsp;<i class="fa fa-rouble"></i></strong></div>
+				<div class="btns btns4027057"><button class="gtm_buybtn btn btn-success btn-sm" onclick="buy(4027057,0)"><i class="fa fa-shopping-cart"></i> Купить</button><button class="defer-btn btn showWarn btn-sm" data-id="4027057" data-warn="defer-not-reg-notice"><i class="fa fa-bookmark-o"></i></button></div>
+			
+		</div>
+	</div>
+</div>
+<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 grid">
+	<div class="product ">
+				<a href="https://chaconne.ru/product/4053574/" class="img-container bg-item size-3x4" data-image-src="https://img.chaconne.ru/rsz/img/4053574_910306.[w300h350q90].jpg" itemprop="image" style="background-image: url(&quot;https://img.chaconne.ru/rsz/img/4053574_910306.[w300h350q90].jpg&quot;);"></a>
+		<a href="https://chaconne.ru/product/4053574/" class="title text-center">Батальон в пустыне. Солдаты Афганской войны. Предисловие Дмитрий GOBNIN Пучков</a>
+
+		<div class="grid-row-height text-center">
+		<i class="fa fa-user-circle-o author"></i> <a href="https://chaconne.ru/author/145761/" class="author">Козлачков А.А.</a>, <a href="https://chaconne.ru/author/126337/" class="author">Пучков Goblin Дмитрий</a>		</div>
+
+		
+		<div class="clearfix order">
+
+			
+				<div class="price"><strong>462&nbsp;<i class="fa fa-rouble"></i></strong></div>
+				<div class="btns btns4053574"><button class="gtm_buybtn btn btn-success btn-sm" onclick="buy(4053574,0)"><i class="fa fa-shopping-cart"></i> Купить</button><button class="defer-btn btn showWarn btn-sm" data-id="4053574" data-warn="defer-not-reg-notice"><i class="fa fa-bookmark-o"></i></button></div>
+			
+		</div>
+	</div>
+</div>
+			</div>
+
+			<!-- div class="more">
+				<button class="btn">Показать еще</button>
+			</div -->
+
+		</div>
+
+
+
+		<div class="products list hidden">
+
+			
+<div class="product">
+		<a href="https://chaconne.ru/product/4027057/" class="img-container bg-item size-3x4" data-image-src="https://img.chaconne.ru/rsz/img/4027057_877307.[w300h350q90].jpg" itemprop="image" style="background-image: url(&quot;https://img.chaconne.ru/rsz/img/4027057_877307.[w300h350q90].jpg&quot;);"></a>
+	<div class="text">
+		
+		<a href="https://chaconne.ru/product/4027057/" class="title">Elasticsearch, Kibana, Logstash и поисковые системы нового поколения</a>
+
+		<div class="info_string">
+			<span><i class="fa fa-user-circle-o author"></i> <a href="https://chaconne.ru/author/141815/" class="author">Шукла П.</a></span>
+			<div class="book_info">
+
+									<a class="izdat" href="https://chaconne.ru/izdatelstvo/13/">
+						<i>Питер</i></a>
+				
+									<span>2019</span>
+				
+									<span>352  стр.</span>
+				
+									<span>Мягкая обложка</span>
+				
+
+			</div>
+		</div>
+
+
+		<p class="description hidden-xs">Elastic-стек - это набор мощных 
+современных инструментов для распределенного поиска, анализа, ведения 
+логов и визуализации средних и больших массивов данных. Вы узнаете, как 
+установить и настроить для работы все эти...</p>
+
+
+		<div class="order clearfix">
+			
+			<div class="price"><strong>2&nbsp;046&nbsp;<i class="fa fa-rouble"></i></strong></div>
+			<div class="btns btns4027057"><button class="gtm_buybtn btn btn-success btn-sm" onclick="buy(4027057,0)"><i class="fa fa-shopping-cart"></i> Купить</button><button class="defer-btn btn showWarn btn-sm" data-id="4027057" data-warn="defer-not-reg-notice"><i class="fa fa-bookmark-o"></i></button></div>
+					</div>
+	</div>
+
+	<p class="description visible-xs" style="clear:both;margin-bottom:40px;">Elastic-стек
+ - это набор мощных современных инструментов для распределенного поиска,
+ анализа, ведения логов и визуализации средних и больших массивов 
+данных. Вы узнаете, как установить и настроить для работы все эти...</p>
+</div>
+<div class="product">
+		<a href="https://chaconne.ru/product/4053574/" class="img-container bg-item size-3x4" data-image-src="https://img.chaconne.ru/rsz/img/4053574_910306.[w300h350q90].jpg" itemprop="image" style="background-image: url(&quot;https://img.chaconne.ru/rsz/img/4053574_910306.[w300h350q90].jpg&quot;);"></a>
+	<div class="text">
+					<p class="seria hidden-xs">Серия
+				<a href="https://chaconne.ru/series/18153/">Разведопрос</a>
+			</p>
+		
+		<a href="https://chaconne.ru/product/4053574/" class="title">Батальон в пустыне. Солдаты Афганской войны. Предисловие Дмитрий GOBNIN Пучков</a>
+
+		<div class="info_string">
+			<span><i class="fa fa-user-circle-o author"></i> <a href="https://chaconne.ru/author/145761/" class="author">Козлачков А.А.</a>, <a href="https://chaconne.ru/author/126337/" class="author">Пучков Goblin Дмитрий</a></span>
+			<div class="book_info">
+
+									<a class="izdat" href="https://chaconne.ru/izdatelstvo/13/">
+						<i>Питер</i></a>
+				
+									<span>2020</span>
+				
+									<span>288  стр.</span>
+				
+									<span>Твердый переплет</span>
+				
+
+			</div>
+		</div>
+
+
+		<p class="description hidden-xs">Новый сборник Алексея Козлачкова, 
+прослужившего более двух лет в Афганистане командиром взвода 
+парашютно-десантного батальона, один из ярких примеров «Афганской прозы»
+ в современной русской литературе. В него вошли...</p>
+
+
+		<div class="order clearfix">
+			
+			<div class="price"><strong>462&nbsp;<i class="fa fa-rouble"></i></strong></div>
+			<div class="btns btns4053574"><button class="gtm_buybtn btn btn-success btn-sm" onclick="buy(4053574,0)"><i class="fa fa-shopping-cart"></i> Купить</button><button class="defer-btn btn showWarn btn-sm" data-id="4053574" data-warn="defer-not-reg-notice"><i class="fa fa-bookmark-o"></i></button></div>
+					</div>
+	</div>
+
+	<p class="description visible-xs" style="clear:both;margin-bottom:40px;">Новый
+ сборник Алексея Козлачкова, прослужившего более двух лет в Афганистане 
+командиром взвода парашютно-десантного батальона, один из ярких примеров
+ «Афганской прозы» в современной русской литературе. В него вошли...</p>
+</div>
+			<!-- div class="more">
+				<button class="btn">Показать еще</button>
+			</div -->
+		</div>
+
+
+
+	</div><!-- .grid -->
+
+</div><!-- .row -->
+        </div>
+
+		<div class="clearfix"></div><br><br>
+
+
+        <footer>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h4>Каталог товаров</h4>
+                            <ul class="menu">
+                                <li><a href="https://chaconne.ru/category/573/">Книги</a></li>
+                                <li><a href="https://chaconne.ru/category/548/">Канцелярские товары</a></li>
+                                <li><a href="https://chaconne.ru/category/4836/">Школьная форма</a></li>
+                                <li><a href="https://chaconne.ru/category/4494/">Развивающие игры и Игрушки</a></li>
+                                <li><a href="https://chaconne.ru/category/5785/">Настольные игры</a></li>
+                                <li><a href="https://chaconne.ru/category/4654/">Товары для хобби и творчества</a></li>
+                                <li><a href="https://chaconne.ru/category/4444/">Коллекционерам</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4>Покупателям</h4>
+                            <ul class="menu">
+                                <li><a href="https://chaconne.ru/news/">Новости</a></li>
+                                <li><a href="https://chaconne.ru/info/delivery/">Условия доставки</a></li>
+                                <li><a href="https://chaconne.ru/info/payment.php">Условия оплаты</a></li>
+                                <li><a href="https://chaconne.ru/order/terms_of_return.php">Условия возврата</a></li>
+                                <li><a href="https://chaconne.ru/info/discount_card.php">Дисконтная программа</a></li>
+                                <li><a href="https://chaconne.ru/info/discount.php">Скидки</a></li>
+								<li><a href="https://chaconne.ru/info/giftcard.php">Подарочные карты</a></li>
+                                <li><a href="https://chaconne.ru/info/opt.php">Оптовый отдел</a></li>
+                                <li><a href="https://chaconne.ru/order/terms_of_service.php">Пользовательское соглашение</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-sm-6">
+							<h4><a href="https://chaconne.ru/competition/">Конкурсы</a></h4>
+							<br>
+                            <h4>О компании</h4>
+                            <ul class="menu">
+                                <li><a href="https://chaconne.ru/info/shops.php">Наши магазины</a></li>
+                                <!--<li><a href="/info/about.php">История фирмы</a></li>-->
+                                <li><a href="https://chaconne.ru/info/vacancy.php">Вакансии</a></li>
+                                <li><a href="https://chaconne.ru/info/contacts.php">Контакты</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4>Мы в соц. сетях</h4>
+                            <ul class="menu">
+                                <li><a href="https://vk.com/chaconne63" target="_blank">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x" style="color:#375474"></i>
+										<i class="fa fa-vk fa-stack-1x fa-inverse"></i>
+									</span>
+									Новостная группа</a></li>
+                                <li><a href="https://www.instagram.com/chaconne63/" target="_blank">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x" style="color:#BC2A8D"></i>
+										<i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+									</span>
+									Instagram</a></li>
+                                <li><a href="https://www.facebook.com/chaconne63" target="_blank">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x" style="color:#3C599F"></i>
+										<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+									</span>
+									Facebook</a></li>
+                            </ul>
+							<h4>Консультант по заказам интернет-магазина:</h4>
+							<ul class="list-unstyled">
+								<li style="padding-bottom: 9px">
+									<a href="viber://chat?number=+79170121747" class="unstyled">
+									<img src="SinglePageResult_files/viber.svg" width="22">
+									viber +7-917-012-17-47</a>
+								</li>
+								<li>
+									<a href="whatsapp://send?phone=79170121747" class="unstyled">
+									<img src="SinglePageResult_files/whatsapp.svg" width="20">
+									whatsapp +7-917-012-17-47</a>
+								</li>
+							</ul>
+							<br><br>
+
+							<h4 class="visible-xs">Телефоны:</h4>
+							<ul class="visible-xs list-unstyled">
+								<li style="padding-bottom: 9px">
+									<a class="unstyled" href="tel:+7 (846) 331-22-33">
+									<img src="SinglePageResult_files/phone.svg" width="16" height="16">
+									+7 (846) 331-22-33</a> Самара
+									<br class="visible-xs">с 10:00 до 20:00
+								</li>
+								<li>
+									<a class="unstyled" href="tel:+7 (8482) 55-55-88">
+									<img src="SinglePageResult_files/phone.svg" width="16" height="16">
+									+7 (8482) 55-55-88</a> Тольятти
+									<br class="visible-xs">с 10:00 до 20:00
+								</li>
+							</ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text">
+                <p>© 1994-2020 Интернет-магазин "Чакона": купить книги в Самаре, Тольятти, Новокуйбышевске и Сызрани.</p>
+                <p>Вы можете оформить заказ в интернете или посетить 
+наши розничные магазины. В наличии широчайший ассортимент товаров. Со 
+многими издательствами мы работаем без посредников, поэтому у Вас есть 
+возможность заказать самые свежие новинки и книги, которые только 
+готовятся к выпуску. Доставка по России может быть для Вас бесплатной. 
+Желаем удачных покупок!</p>
+            </div>
+        </footer>
+
+    </div>
+
+
+	<div style="visibility: hidden; position: absolute; left: -100%; display: none;" id="catalog_menu_init_container">
+	
+</div>
+
+<script>
+var catalogMenuPath = [0], catalogMenuHeight,
+	listId = 0;
+
+
+/*------------------------------------------------------------------------------------------*/
+
+$('#catalog_menu').on('click', 'a.next', function() {
+	var _this = $(this),
+		id = _this.data('id'),
+		_id = '#menucat'+id.toString(10).replace('.','\\.'),
+		m = $(_id),
+		_show = function() {
+			catalogMenuHeight = m.height()-2/*border*/;
+			$('#catalog_menu').height(catalogMenuHeight);
+			m.css({left:0});
+			if (m.offset().top < $(window).scrollTop()) {
+				$('html,body').animate({scrollTop:m.offset().top}, 500);
+			}
+		};
+
+	catalogMenuPath.push(id);
+
+	if (!m.length) {
+		_this.addClass('wait');
+		$.get('/ajax/catalog_menu.php', {id:id, list:listId}, function(res) {
+			$('#catalog_menu').append(res);
+			m = $(_id);
+			_show();
+			_this.removeClass('wait');
+		}, 'html');
+	}
+	else {
+		_show();
+	}
+});
+
+/*------------------------------------------------------------------------------------------*/
+
+$('#catalog_menu').on('click', 'a.prev', function () {
+	var _this = $(this),
+		m = $(this).closest('.menu'),
+		id = catalogMenuPath[catalogMenuPath.length - 2],
+		_id = '#menucat'+id.toString(10).replace('.','\\.'),
+		_show = function() {
+			catalogMenuHeight = $(_id).height()-2/*border*/;
+			$('#catalog_menu').height(catalogMenuHeight);
+			m.css({left:'100%'});
+		};
+
+	catalogMenuPath.pop();
+
+	if (!$(_id).length) {
+		_this.addClass('wait');
+		$.get('/ajax/catalog_menu.php', {id:id, list:listId}, function(res) {
+			$('#catalog_menu').prepend(res);
+			$(_id).css({left:0});
+			_show();
+			_this.removeClass('wait');
+		}, 'html');
+	}
+	else {
+		_show();
+	}
+});
+
+/*------------------------------------------------------------------------------------------*/
+
+$('#catalog_menu_mob_btn').click(function() {
+	if ($(this).hasClass('active')) {
+		$('#catalog_menu_xs').css({height: catalogMenuHeight+15/*margin*/});
+		setTimeout(function() { // wait animation
+			$('#catalog_menu_xs').css({height: 'auto'});
+		}, 500);
+	}
+	else {
+		$('#catalog_menu_xs').height(catalogMenuHeight);
+		$('#catalog_menu_xs').height(0);
+	}
+
+});
+</script>
+
+	<div class="alert alert-warning" id="defer-not-reg-notice" style="display:none;position:absolute;width:200px;z-index:1000">
+		Пожалуйста, <a href="https://chaconne.ru/enter.php">войдите</a> или <a href="https://chaconne.ru/reg/">зарегистрируйтесь</a>,
+		чтобы мы могли сохранить Ваш список.
+	</div>
+
+	
+	<script src="SinglePageResult_files/last.js"></script>
+
+	
+	
+
+
+<div class="autocomplete-suggestions" style="position: absolute; display: none; max-height: 400px; z-index: 9999;"></div> <script type="text/javascript" id="">(function(a,e,f,g,b,c,d){a[b]=a[b]||function(){(a[b].a=a[b].a||[]).push(arguments)};a[b].l=1*new Date;c=e.createElement(f);d=e.getElementsByTagName(f)[0];c.async=1;c.src=g;d.parentNode.insertBefore(c,d)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");ym(40624395,"init",{clickmap:!0,trackLinks:!0,accurateTrackBounce:!0,webvisor:!0,ecommerce:"dataLayer"});</script> <noscript><div><img src="https://mc.yandex.ru/watch/40624395" style="position:absolute; left:-9999px;" alt=""></div></noscript> <iframe name="ym-native-frame" title="ym-native-frame" style="opacity: 0 !important; width: 0px !important; height: 0px !important; position: absolute !important; left: 100% !important; bottom: 100% !important; border: 0px none !important;" aria-hidden="true" frameborder="0"></iframe><ym-measure class="ym-viewport" style="display: block; inset: 0px; position: fixed; transform: translate(0px, -100%); transform-origin: 0px 0px 0px;"></ym-measure><ym-measure class="ym-zoom" style="bottom: 100%; position: fixed; width: 100vw;"></ym-measure></body></html>
+<!-- render time: 0,172 sec -->

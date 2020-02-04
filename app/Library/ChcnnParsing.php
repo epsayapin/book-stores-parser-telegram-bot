@@ -8,11 +8,13 @@ class ChcnnParsing
 	public static $search_url = 'https://chaconne.ru/search/?q=';
 	public static $bookcard_url = 'https://chaconne.ru/product/';
 
-	public static function getBookList(String $query, int $currentPage = 0): array
+	public static function getBookList(String $query, int $currentPage = 1): array
 	{
+
 
 		$requestURL = self::$search_url . urlencode($query); 
 		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
+		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/SinglePageResult.html";
 
 		$result = [];
 		$booklist = [];
@@ -27,7 +29,6 @@ class ChcnnParsing
 		$crawler = new Crawler($str);
 		$productsArray = $crawler->filter(".products .row .product .title");
 		$productsCount = count($productsArray);
-		$pagesCount = $crawler->filter(".paginator .links a")->last()->html();
 
 
 
@@ -39,7 +40,18 @@ class ChcnnParsing
 
 		$result[] = ["bookList" => $booklist]; 
 		$result[] = ["currentPage" => $currentPage];
-		$result[] = ["pagesCount" => $pagesCount];
+
+		if(count($crawler->filter(".paginator .links a")) > 0)
+		{
+			$pagesCount = $crawler->filter(".paginator .links a")->last()->html();
+			$result["pagesCount"] = $pagesCount;
+
+		}else{
+			$result["pagesCount"] = 1;
+		}
+		
+		
+
 		$result[] = $requestURL;
 		return $result;
 

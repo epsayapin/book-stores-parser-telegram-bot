@@ -55,7 +55,7 @@ class ChcnnParsingTest extends TestCase
     {
 
         $bookCodes = [
-                    '2617830',
+                    //'2617830',
                     '4052565',
                     '4052340',
                     '4052821',
@@ -64,7 +64,7 @@ class ChcnnParsingTest extends TestCase
                     '4000527',
                     '2113226',
                     '3791720',
-                    '3869778'
+                    //'3869778'
             ];
 
         $code = $bookCodes[rand(0, count($bookCodes) - 1)];
@@ -87,4 +87,13 @@ class ChcnnParsingTest extends TestCase
         $this->assertGreaterThan(0, count($bookcard['author']));
     
     }
+
+    public function testSinglePageResultsShouldHandleCorrect()
+    {
+        $query = 'Cobain';
+        $result = ChcnnParsing::getBookList($query);
+        $this->assertEquals(1, $result["pagesCount"]);
+
+    }
+
 }
