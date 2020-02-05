@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Telegram;
 use App\Library;
-
+use App\Library\StartCommand;
 use App\Library\ChcnnParsing;
+
 
 class TelegramBotMessagesController extends Controller
 {
@@ -14,17 +15,16 @@ class TelegramBotMessagesController extends Controller
 
 	public function test()
 	{
-		$response = Telegram::getMe();
-
-		$botId = $response->getId();
-		$firstName = $response->getFirstName();
-		$username = $response->getUsername();
 
 		$updates = Telegram::getUpdates();
 
 		$lastMessage = $updates[count($updates) - 1];
 
-		//$update = Telegram::commandsHandler(false, ['timeout' => 30]);
+		$telegram = Telegram::addCommand(\App\Library\StartCommand::class);
+
+		$update = Telegram::commandsHandler(false, ['timeout' => 30]);
+
+		
 
 /*
 		$searchResult = ChcnnParsing::getBookList($lastMessage["message"]["text"]);
