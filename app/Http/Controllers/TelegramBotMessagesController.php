@@ -20,7 +20,6 @@ class TelegramBotMessagesController extends Controller
 
 		$lastMessage = $updates[count($updates) - 1];
 
-		$telegram = Telegram::addCommand(\App\Library\StartCommand::class);
 
 		$update = Telegram::commandsHandler(false, ['timeout' => 30]);
 
