@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
-class SearchResultsPagesTest extends TestCase
+class TelegramBotMessagesController extends TestCase
 {
     /**
      * A basic unit test example.
