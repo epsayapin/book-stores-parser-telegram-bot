@@ -27,15 +27,19 @@ class ChcnnParsing
 		libxml_use_internal_errors(false);
 		
 		$crawler = new Crawler($str);
-		$productsArray = $crawler->filter(".products .row .product .title");
+		$productsArray = $crawler->filter(".products .row .product");
 		$productsCount = count($productsArray);
-
-
 
 
 		for($i=0; $i<$productsCount; $i++)
 		{
-			$booklist[] = $productsArray->eq($i)->text();
+			$book = [];
+			$book["title"] = $productsArray->eq($i)->filter('.title')->text();
+			$link = $productsArray->eq($i)->filter(".title")->attr('href');
+			preg_match('/\d*.$/', $link, $code);
+			$book['code'] = str_replace("/", '', $code[0]); 
+
+			$booklist[] = $book;
 		}
 
 		$result[] = ["bookList" => $booklist]; 

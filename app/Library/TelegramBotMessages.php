@@ -13,16 +13,16 @@ class TelegramBotMessages
 			         ['0']
 			];
 
-		$replyMarkup = [
+		$replyMarkup = Telegram::replyKeyboardMarkup([
 			'keyboard' => $keyboard,
 			'resize_keyboard' => true,
 			'one_time_keyboard' => true
-		];
+		]);
 
 		$response = Telegram::sendMessage([
 			'chat_id' => $chatId,
 			'text' => 'Hello, world!',
-			'reply_markup' => $keyboard
+			'reply_markup' => $replyMarkup
 		]);
 
 		$getMessageId = $response->getMessageId();
