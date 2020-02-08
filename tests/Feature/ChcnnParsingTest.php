@@ -39,18 +39,18 @@ class ChcnnParsingTest extends TestCase
 
         $searchQuery = $searchQuerys[rand(0, count($searchQuerys) - 1)];
 
-        $result = \App\Library\ChcnnParsing::getBookList($searchQuery);
-        $bookList = $result[0]["bookList"];
+        $searchResult =ChcnnParsing::getBookList($searchQuery);
+        $bookList = $searchResult->bookList;
 
 
        //$jsonString = $response->getBody();
       //  $bodyAsArray = json_decode($jsonString, true);
-        $this->assertTrue(isset($result[0]{"bookList"}));
-        $this->assertTrue(isset($result[1]['currentPage']));
-        $this->assertTrue(isset($result["pagesCount"]));
+        $this->assertTrue(isset($searchResult->bookList));
+        $this->assertTrue(isset($searchResult->currentPage));
+        $this->assertTrue(isset($searchResult->countPages));
 
-        $this->assertEquals(24, count($result[0]["bookList"]));
-        $this->assertGreaterThan(0, $result["pagesCount"]);
+        $this->assertEquals(24, count($searchResult->bookList));
+        $this->assertGreaterThan(0, $searchResult->countPages);
 
         foreach($bookList as $book)
         {
@@ -100,8 +100,8 @@ class ChcnnParsingTest extends TestCase
     public function testSinglePageResultsShouldHandleCorrect()
     {
         $query = 'Cobain';
-        $result = ChcnnParsing::getBookList($query);
-        $this->assertGreaterThan(0, $result["pagesCount"]);
+        $searchResult = ChcnnParsing::getBookList($query);
+        $this->assertGreaterThan(0, $searchResult->countPages);
 
     }
 

@@ -7,7 +7,7 @@ use Telegram;
 use App\Library;
 use App\Library\StartCommand;
 use App\Library\ChcnnParsing;
-use App\Library\TelegramBotMessages;
+use App\Library\TelegramBookDataMessage;
 
 use \App\Entity;
 
@@ -23,7 +23,7 @@ class LongPollController extends Controller
 	$entity = Entity::findOrFail(2);
 		$status = $entity->status;
 		$attemps = 1;
-		$attempsLimit = 100;
+		$attempsLimit = 5;
 
 		while ($status === "PENDING" && $attemps <= $attempsLimit)
 		{
@@ -31,23 +31,26 @@ class LongPollController extends Controller
 
 			$updates = Telegram::getUpdates();
 
-			//return $updates;
 			if (count($updates) >0)
 			{
-				$chatId = $updates[0]['message']['chat']['id'];
-				$lastMessage = $updates[count($updates) - 1];
-
 				$update = Telegram::commandsHandler(false, ['timeout' => 30]);			
-
+				
+				$lastMessage = $updates[count($updates) - 1];
+				
+				if (isset($lastMessage["callback_query"]))
+				{
+					$callbackData = $lastMessage["callback_query"]["data"];
+					TelegramBookDataMessage::showBookCard($chatId, $callbackData);
+				}
 
 				if (isset($lastMessage["message"]["text"]) && ! isset($lastMessage["message"]["entities"][0]['type']))
 				{
+				$chatId = $updates[0]['message']['chat']['id'];
 				$query = $lastMessage["message"]["text"];	
-				//$searchResult = ChcnnParsing::getBookList($query);
-				
-
-				TelegramBotMessages::showSearchResult($chatId, $searchResult);
+				$searchResult = ChcnnParsing::getBookList($query);
+				TelegramBookDataMessage::showSearchResult($chatId, $searchResult);
 				}
+
 				$status = $entity->refresh()->status;
 			}
 			$attemps++;
@@ -58,6 +61,6 @@ class LongPollController extends Controller
 				"text" => 'Long Poll is dead'
 			]);
 
-		return $lastMessage;
+		return $updates;
 	}
 }

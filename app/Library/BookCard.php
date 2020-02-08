@@ -11,7 +11,7 @@ class BookCard
 	public $countPages;
 
 	public function __construct(
-			sting 	$title,
+			string 	$title,
 			array 	$author,
 			int 	$price,
 			string 	$coverFormat,

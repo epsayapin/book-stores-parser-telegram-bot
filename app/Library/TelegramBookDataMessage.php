@@ -1,16 +1,21 @@
 <?php
 namespace App\Library;
 use Telegram;
+use App\Library\BookCard;
+use App\Library\searchResult;
 
-class TelegramBotMessages
+class TelegramBookDataMessage
 {
 	public static function showSearchResult($chatId, $searchResult)
 	{
 
 
 		$keyboard = [];
+
+
+		
 		$i = 1;
-		foreach($searchResult[0]["bookList"] as $book)
+		foreach($searchResult->bookList as $book)
 		{
 			$keyboard[][] = ['text' => "$i. " . $book['title'], 'callback_data' => $book['code']];
 			$i++;
@@ -18,16 +23,13 @@ class TelegramBotMessages
 
 		$fillStr = "................................................................................";
 
-		$currentPage = $searchResult[1]['currentPage'];
-		$countPages = $searchResult['pagesCount'];
-		$buttonPages = [
-				["text" => "Total $countPages", "callback_data" => 'empty'],
-				["text" => "Current $currentPage", "callback_data" => 'empty']
-		];
-
-		$keyboard[][] = $buttonPages;
-
 		$keyboard[][] = ["text" => $fillStr, 'callback_data' => "epmty"];
+
+		$buttonPages = [
+				["text" => "Count $searchResult->countPages", "callback_data" => 'empty'],
+				["text" => "Current $searchResult->currentPage", "callback_data" => 'empty']
+		];
+		$keyboard[] = $buttonPages;
 
 		$replyMarkup = Telegram::replyKeyboardMarkup([
 			'inline_keyboard' => $keyboard
@@ -40,6 +42,16 @@ class TelegramBotMessages
 		]);
 
 		$getMessageId = $response->getMessageId();
+		
+	}
+
+	public static function showBookCard($chatId, BookCard $bookCard)
+	{
+		$message = "";
+		$message .= "Название - $bookCard->title"
+		$message .= "Автор - $bookCard->author[0]";
+		$message .= "Цена = $bookCard->price";
+
 		
 	}
 

@@ -10,6 +10,7 @@ class BookCardsController extends Controller
     //
     public function create(Request $request)
     {
-    	return ChcnnParsing::getBookCard($request["bookcode"]);
+    	$bookCard = ChcnnParsing::getBookCard($request["bookcode"]);
+    	return view('bookcards.create')->with('bookCard', $bookCard);
     }
 }

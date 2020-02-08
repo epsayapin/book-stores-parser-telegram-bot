@@ -3,7 +3,7 @@ namespace App\Library;
 
 use Symfony\Component\DomCrawler\Crawler;
 use App\Library\SearchResult;
-
+use App\Library\BookCard;
 class ChcnnParsing
 {
 	public static $search_url = 'https://chaconne.ru/search/?q=';
@@ -57,16 +57,16 @@ class ChcnnParsing
 		$searchResult = new SearchResult(
 					$bookList,
 					$currentPage,
-					$countPages
+					(int)$countPages
 						);
 		return $searchResult;
 
 	}
 
-	public static function getBookCard(String $bookCode): array
+	public static function getBookCard(String $bookCode): BookCard
 	{
-		$bookCard = [];
-		$bookCard["author"] = [];
+		
+		$author = [];
 
 		$requestURL = self::$bookcard_url . $bookCode . '/';
 		//$requestURL = __DIR__ . '/../../tests/SearchPageExample/BookCardWitcher.html';
@@ -79,10 +79,10 @@ class ChcnnParsing
 		$crawler = new Crawler($str);
 
 
-		$bookCard["title"] = $crawler->filter('.product_text h1')->text();
-		$bookCard["author"][] = $crawler->filter('a.author')->text();
-		$bookCard["price"] = $crawler->filter('.price strong ')->text();
-		$bookCard["code"] =	$crawler->filter('.product_text table tr')->first()->filter('td')->last()->text();
+		$title = $crawler->filter('.product_text h1')->text();
+		$author[] = $crawler->filter('a.author')->text();
+		$price = $crawler->filter('.price strong ')->text();
+		$code =	$crawler->filter('.product_text table tr')->first()->filter('td')->last()->text();
 
 		$productTable = $crawler->filter('.product_text table tr td');
 		$countRows = count($productTable);
@@ -92,17 +92,17 @@ class ChcnnParsing
 			switch ($productTable->eq($i)->text()) {
 				case 'Кол-во страниц':
 					# code...
-				$bookCard["pages"] = $productTable->eq($i+1)->text();
+				$pages = $productTable->eq($i+1)->text();
 					break;
 				case 'Оформление':
-					$bookCard["coverFormat"] = $productTable->eq($i+1)->text();
+					$coverFormat = $productTable->eq($i+1)->text();
 				default:
 					# code...
 					break;
 			}
 
 		}
-
+		$bookCard = new BookCard($title, $author, (int)$price, $coverFormat, $code, (int)$pages);
 		return $bookCard;
 	}
 
