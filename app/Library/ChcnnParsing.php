@@ -2,13 +2,14 @@
 namespace App\Library;
 
 use Symfony\Component\DomCrawler\Crawler;
+use App\Library\SearchResult;
 
 class ChcnnParsing
 {
 	public static $search_url = 'https://chaconne.ru/search/?q=';
 	public static $bookcard_url = 'https://chaconne.ru/product/';
 
-	public static function getBookList(String $query, int $currentPage = 1): array
+	public static function getBookList(String $query, int $currentPage = 1): SearchResult
 	{
 
 
@@ -16,8 +17,10 @@ class ChcnnParsing
 		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
 		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/SinglePageResult.html";
 
-		$result = [];
-		$booklist = [];
+
+		$bookList = [];
+		$currentPage;
+		$countPages;
 		
 		$doc = new \DOMDocument();
 		libxml_use_internal_errors(true);
@@ -39,25 +42,24 @@ class ChcnnParsing
 			preg_match('/\d*.$/', $link, $code);
 			$book['code'] = str_replace("/", '', $code[0]); 
 
-			$booklist[] = $book;
+			$bookList[] = $book;
 		}
 
-		$result[] = ["bookList" => $booklist]; 
-		$result[] = ["currentPage" => $currentPage];
 
 		if(count($crawler->filter(".paginator .links a")) > 0)
 		{
-			$pagesCount = $crawler->filter(".paginator .links a")->last()->html();
-			$result["pagesCount"] = $pagesCount;
-
+			$countPages = $crawler->filter(".paginator .links a")->last()->html();
+			
 		}else{
-			$result["pagesCount"] = 1;
+			$countPages = 1;
 		}
 		
-		
-
-		$result[] = $requestURL;
-		return $result;
+		$searchResult = new SearchResult(
+					$bookList,
+					$currentPage,
+					$countPages
+						);
+		return $searchResult;
 
 	}
 

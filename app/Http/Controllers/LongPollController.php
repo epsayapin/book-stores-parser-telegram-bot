@@ -23,33 +23,40 @@ class LongPollController extends Controller
 	$entity = Entity::findOrFail(2);
 		$status = $entity->status;
 		$attemps = 1;
-		$attempsLimit = 1;
+		$attempsLimit = 100;
 
 		while ($status === "PENDING" && $attemps <= $attempsLimit)
 		{
-			sleep(2);
+			sleep(1);
 
 			$updates = Telegram::getUpdates();
 
 			//return $updates;
-			$chatId = $updates[0]['message']['chat']['id'];
-			$lastMessage = $updates[count($updates) - 1];
-			$query = $lastMessage["message"]["text"];
-//			$update = Telegram::commandsHandler(false, ['timeout' => 30]);			
+			if (count($updates) >0)
+			{
+				$chatId = $updates[0]['message']['chat']['id'];
+				$lastMessage = $updates[count($updates) - 1];
 
-			$searchResult =[
-				"bookList" => [
-					['title' => $query, 'code' => '111'],
-					['title' => 'Tolstoy', 'code' => '222']
-				]
-			];
+				$update = Telegram::commandsHandler(false, ['timeout' => 30]);			
 
-			$searchResult = ChcnnParsing::getBookList($query);
-			TelegramBotMessages::showSearchResult($chatId, $searchResult);
 
-			$status = $entity->refresh()->status;
+				if (isset($lastMessage["message"]["text"]) && ! isset($lastMessage["message"]["entities"][0]['type']))
+				{
+				$query = $lastMessage["message"]["text"];	
+				//$searchResult = ChcnnParsing::getBookList($query);
+				
+
+				TelegramBotMessages::showSearchResult($chatId, $searchResult);
+				}
+				$status = $entity->refresh()->status;
+			}
 			$attemps++;
 		}
+
+		Telegram::sendMessage([
+				"chat_id" => $chatId,
+				"text" => 'Long Poll is dead'
+			]);
 
 		return $lastMessage;
 	}

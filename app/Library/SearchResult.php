@@ -1,14 +1,18 @@
 <?php
-namespace App\Library
+namespace App\Library;
 
 class SearchResult
 {
-	public function __construct(Array $bookList, int $currentPage, int $totalPages)
+	public $bookList;
+	public $currentPage;
+	public $countPages;
+
+	public function __construct(Array $bookList, int $currentPage, int $countPages)
 	{
 
 		$this->bookList = $bookList;
 		$this->currentPage = $currentPage;
-		$this->totalPages $totalPages;
+		$this->countPages = $countPages;
 
 	}
 }
