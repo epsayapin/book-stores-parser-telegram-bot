@@ -4,19 +4,20 @@ use Telegram;
 
 class TelegramBotMessages
 {
-	public static function showSearchResult($chatId)
+	public static function showSearchResult($chatId, $searchResult)
 	{
-		$keyboard = [
-			    ['7', '8', '9'],
-			    ['4', '5', '6'],
-			    ['1', '2', '3'],
-			         ['0']
-			];
+
+
+		$keyboard = [];
+
+		foreach($searchResult[0]["bookList"] as $book)
+		{
+			$keyboard[][] = ['text' => $book['title'], 'callback_data' => $book['code']];
+
+		}
 
 		$replyMarkup = Telegram::replyKeyboardMarkup([
-			'keyboard' => $keyboard,
-			'resize_keyboard' => true,
-			'one_time_keyboard' => true
+			'inline_keyboard' => $keyboard
 		]);
 
 		$response = Telegram::sendMessage([

@@ -20,24 +20,7 @@ class LongPollController extends Controller
 	{
 
 
-/*
-		$searchResult = ChcnnParsing::getBookList($lastMessage["message"]["text"]);
-
-		$str = "";
-
-		foreach($searchResult[0]["bookList"] as $title)
-		{
-			$str .= $title . "\n";
-		}
-
-		$response = Telegram::sendMessage([
-		'chat_id' => '117157138', 
-		'text' => $str 
-		]);
-
-		$messageId = $response->getMessageId();
-*/
-		$entity = Entity::findOrFail(2);
+	$entity = Entity::findOrFail(2);
 		$status = $entity->status;
 		$attemps = 1;
 		$attempsLimit = 1;
@@ -50,15 +33,24 @@ class LongPollController extends Controller
 
 			//return $updates;
 			$chatId = $updates[0]['message']['chat']['id'];
-			//$lastMessage = $updates[count($updates) - 1];
+			$lastMessage = $updates[count($updates) - 1];
+			$query = $lastMessage["message"]["text"];
 //			$update = Telegram::commandsHandler(false, ['timeout' => 30]);			
 
-			TelegramBotMessages::showSearchResult($chatId);
+			$searchResult =[
+				"bookList" => [
+					['title' => $query, 'code' => '111'],
+					['title' => 'Tolstoy', 'code' => '222']
+				]
+			];
+
+			$searchResult = ChcnnParsing::getBookList($query);
+			TelegramBotMessages::showSearchResult($chatId, $searchResult);
 
 			$status = $entity->refresh()->status;
 			$attemps++;
 		}
 
-		return "Time is Out";
+		return $lastMessage;
 	}
 }
