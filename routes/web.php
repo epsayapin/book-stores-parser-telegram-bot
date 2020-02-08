@@ -20,7 +20,7 @@ Route::get('/', function () {
 Route::get('/booklists', "BookListsController@create");
 Route::get('/bookcards', "BookCardsController@create");
 
-Route::get('/longpoll', "TelegramBotMessagesController@longpoll");
+Route::get('/longpoll', "LongPollController@longpoll");
 
 Route::get('/entity/{entityId}', function($entityId)
 {
