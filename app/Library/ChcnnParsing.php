@@ -18,7 +18,7 @@ class ChcnnParsing
 		{
 			$requestURL .= "&p=$currentPage";
 		}
-		$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
+		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
 		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/SinglePageResult.html";
 
 

@@ -1,25 +1,9 @@
 <?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use Telegram;
-use App\Library;
-use App\Library\StartCommand;
-use App\Library\ChcnnParsing;
-use App\Library\TelegramBookDataMessage;
-
-use \App\Entity;
-
-
-
-class TelegramBotMessagesController extends Controller
+trait HandleTelemgramMessages
 {
-    //
-
-	public function handle()
+	public function handle($message)
 	{
-		$message = session()->get('message');
+		
 		
 		if (isset($message["callback_query"]))
 		{
@@ -34,7 +18,7 @@ class TelegramBotMessagesController extends Controller
 
 	}
 
-	public function message()
+	private function message()
 	{
 		$message = session()->get('message');
 		$chatId = $message['message']['chat']['id'];
@@ -43,7 +27,7 @@ class TelegramBotMessagesController extends Controller
 		TelegramBookDataMessage::showSearchResult($chatId, $searchResult);
 	}
 
-	public function callback()
+	private function callback()
 	{
 		$message = session()->get('message');
 		$data = explode(',', $message['callback_query']["data"]);
@@ -60,8 +44,5 @@ class TelegramBotMessagesController extends Controller
 									"reply_markup" => $replyMarkup	
 									]);
 	}
-
-
-
 
 }
