@@ -14,7 +14,11 @@ class ChcnnParsing
 
 
 		$requestURL = self::$search_url . urlencode($query); 
-		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
+		if ($currentPage > 1)
+		{
+			$requestURL .= "&p=$currentPage";
+		}
+		$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
 		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/SinglePageResult.html";
 
 
@@ -57,7 +61,8 @@ class ChcnnParsing
 		$searchResult = new SearchResult(
 					$bookList,
 					$currentPage,
-					(int)$countPages
+					(int)$countPages,
+					$query
 						);
 		return $searchResult;
 

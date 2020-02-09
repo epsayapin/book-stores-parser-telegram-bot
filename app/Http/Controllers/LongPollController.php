@@ -23,7 +23,7 @@ class LongPollController extends Controller
 	$entity = Entity::findOrFail(2);
 		$status = $entity->status;
 		$attemps = 1;
-		$attempsLimit = 5;
+		$attempsLimit = 1;
 
 		while ($status === "PENDING" && $attemps <= $attempsLimit)
 		{
@@ -33,14 +33,22 @@ class LongPollController extends Controller
 
 			if (count($updates) >0)
 			{
-				$update = Telegram::commandsHandler(false, ['timeout' => 30]);			
-				
+				$update = Telegram::commandsHandler(false, ['timeout' => 30]);
 				$lastMessage = $updates[count($updates) - 1];
 				
 				if (isset($lastMessage["callback_query"]))
 				{
-					$callbackData = $lastMessage["callback_query"]["data"];
-					TelegramBookDataMessage::showBookCard($chatId, $callbackData);
+					$data = explode(',', $lastMessage['callback_query']["data"]);
+					$query = $data[0];
+					$page = $data[1];
+					$chatId = $lastMessage["callback_query"]['message']['chat']['id'];
+					$messageId = $lastMessage["callback_query"]['message']["message_id"];
+					$searchResult = ChcnnParsing::getBookList($query, $page);
+					$replyMarkup = TelegramBookDataMessage::createReplyMarkup($searchResult);
+					Telegram::editMessageText([	'chat_id' => $chatId,
+												'message_id' => $messageId,
+												'text' => 'edited Message',
+												'reply_markup' => $replyMarkup]);
 				}
 
 				if (isset($lastMessage["message"]["text"]) && ! isset($lastMessage["message"]["entities"][0]['type']))
@@ -52,15 +60,20 @@ class LongPollController extends Controller
 				}
 
 				$status = $entity->refresh()->status;
+	
+				$attemps++;
+				if ($attemps == $attempsLimit)
+				{
+					Telegram::sendMessage([
+						"chat_id" => $chatId,
+						"text" => 'Long Poll is dead'
+						]);
+				}
 			}
-			$attemps++;
 		}
 
-		Telegram::sendMessage([
-				"chat_id" => $chatId,
-				"text" => 'Long Poll is dead'
-			]);
 
-		return $updates;
+
+			return $updates;
 	}
 }
