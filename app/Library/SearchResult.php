@@ -8,7 +8,7 @@ class SearchResult
 	public $countPages;
 	public $query;
 
-	public function __construct(Array $bookList, int $currentPage, int $countPages, string $query)
+	public function __construct(Array $bookList, $currentPage, int $countPages, string $query)
 	{
 
 		$this->bookList = $bookList;

@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use Telegram;
 use App\Library;
 use App\Library\StartCommand;
 use App\Library\ChcnnParsing;
 use App\Library\TelegramBookDataMessage;
-
 use \App\Entity;
 
 
@@ -42,13 +42,20 @@ class LongPollController extends Controller
 					$query = $data[0];
 					$page = $data[1];
 					$chatId = $lastMessage["callback_query"]['message']['chat']['id'];
-					$messageId = $lastMessage["callback_query"]['message']["message_id"];
+					$messageId = $lastMessage["callback_query"]['message']['message_id'];
 					$searchResult = ChcnnParsing::getBookList($query, $page);
 					$replyMarkup = TelegramBookDataMessage::createReplyMarkup($searchResult);
-					Telegram::editMessageText([	'chat_id' => $chatId,
-												'message_id' => $messageId,
-												'text' => 'edited Message',
-												'reply_markup' => $replyMarkup]);
+					$response = Telegram::editMessageText([
+												"chat_id" => $chatId, 
+												"message_id" => $messageId,
+												"text" => 'New content',
+												"reply_markup" => $replyMarkup	
+												]);
+					$str = (string)$response;
+					Telegram::sendMessage([ 
+						"chat_id" => $chatId,
+						"text" => "Should be edited $chatId $messageId"
+						]);
 				}
 
 				if (isset($lastMessage["message"]["text"]) && ! isset($lastMessage["message"]["entities"][0]['type']))
@@ -62,7 +69,7 @@ class LongPollController extends Controller
 				$status = $entity->refresh()->status;
 	
 				$attemps++;
-				if ($attemps == $attempsLimit)
+				if ($attemps > $attempsLimit)
 				{
 					Telegram::sendMessage([
 						"chat_id" => $chatId,

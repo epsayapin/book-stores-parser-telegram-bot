@@ -60,7 +60,7 @@ class ChcnnParsing
 		
 		$searchResult = new SearchResult(
 					$bookList,
-					$currentPage,
+					(int)$currentPage,
 					(int)$countPages,
 					$query
 						);

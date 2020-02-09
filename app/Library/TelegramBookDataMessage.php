@@ -64,6 +64,10 @@ class TelegramBookDataMessage
 
 		$getMessageId = $response->getMessageId();
 		
+		Telegram::sendMessage([
+			'chat_id' => $chatId,
+			'text' => $getMessageId
+		]);
 	}
 
 	public static function showBookCard($chatId, BookCard $bookCard)
@@ -76,7 +80,7 @@ class TelegramBookDataMessage
 		
 	}
 
-	public static function createReplyMarkup(searchResult $searchResult)
+	public static function createReplyMarkup(SearchResult $searchResult)
 	{
 
 		$keyboard = [];
@@ -108,7 +112,7 @@ class TelegramBookDataMessage
 
 		if ($searchResult->currentPage < $searchResult->countPages)
 		{
-			$navButtons[1] = ['text' => '>', 'callback_data' => "$searchResult->query," . ($searchResult->currentPage + 1)];
+			$navButtons[1] = ['text' => '>', 'callback_data' => $searchResult->query . "," . ($searchResult->currentPage + 1)];
 		}
 
 		if ($searchResult->currentPage > 1)
