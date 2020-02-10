@@ -8,8 +8,10 @@ class ChcnnParsing
 {
 	public static $search_url = 'https://chaconne.ru/search/?q=';
 	public static $bookcard_url = 'https://chaconne.ru/product/';
+	public static $partsOnPage = 4;
+	public static $partSize = 6;
 
-	public static function getBookList(String $query, int $currentPage = 1): SearchResult
+	public static function getBookList(String $query, int $currentPage = 1, int $resultPart = 1): SearchResult
 	{
 
 
@@ -37,9 +39,25 @@ class ChcnnParsing
 		$productsArray = $crawler->filter(".products .row .product");
 		$productsCount = count($productsArray);
 
+		$startPosition = [
+					1 => 0,
+					2 => 6,
+					3 => 12,
+					4 => 18
+				];
 
-		for($i=0; $i<$productsCount; $i++)
+		$i = $startPosition[$resultPart];
+		$k = $i + self::$partSize - 1;
+		if($productsCount < $k)
 		{
+			$k = $productsCount - 1;
+		}		
+
+		for($i; $i<=$k; $i++)
+		{
+
+			if($productsArray->eq($i))
+			{
 			$book = [];
 			$book["title"] = $productsArray->eq($i)->filter('.title')->text();
 			$link = $productsArray->eq($i)->filter(".title")->attr('href');
@@ -47,6 +65,7 @@ class ChcnnParsing
 			$book['code'] = str_replace("/", '', $code[0]); 
 
 			$bookList[] = $book;
+			}
 		}
 
 
@@ -62,6 +81,7 @@ class ChcnnParsing
 					$bookList,
 					(int)$currentPage,
 					(int)$countPages,
+					$resultPart,
 					$query
 						);
 		return $searchResult;

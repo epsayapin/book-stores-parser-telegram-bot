@@ -37,8 +37,8 @@ class TelegramBotMessagesController extends Controller
 				{
 					if(Update::where('update_id',$update["update_id"])->count() == 0) 
 					{
-					Update::create(["update_id" => $update["update_id"]]);
 					self::handle($update);
+					Update::create(["update_id" => $update["update_id"]]);
 					}	
 				}
 				
@@ -100,7 +100,8 @@ class TelegramBotMessagesController extends Controller
 			case 'searchResult':
 				$query = session('query');
 				$page = $callback_data[1];
-				$searchResult = ChcnnParsing::getBookList($query, $page);
+				$part = $callback_data[2];
+				$searchResult = ChcnnParsing::getBookList($query, $page, $part);
 				$replyMarkup = TelegramBookDataMessage::createReplyMarkup($searchResult);
 				$response = Telegram::editMessageText([
 									"chat_id" => $chatId, 

@@ -73,12 +73,12 @@ class TelegramBookDataMessage
 
 		if ($searchResult->currentPage < $searchResult->countPages)
 		{
-			$navButtons[1] = ['text' => '>', 'callback_data' => 'searchResult,' . ($searchResult->currentPage + 1)];
+			$navButtons[1] = ['text' => '>', 'callback_data' => 'searchResult,' . ($searchResult->currentPage + 1 . "," . $searchResult->resultPart + 1)];
 		}
 
-		if ($searchResult->currentPage > 1)
+		if (($searchResult->currentPage > 1)||($searchResult->resultPart > 1))
 		{
-			$navButtons[0] = ['text' => '<', 'callback_data' => 'searchResult,' . ($searchResult->currentPage - 1)];
+			$navButtons[0] = ['text' => '<', 'callback_data' => 'searchResult,' . ($searchResult->currentPage - 1 . "," . $searchResult->resultPart - 1)];
 		}
 
 		$keyboard[] = $navButtons;
@@ -89,6 +89,11 @@ class TelegramBookDataMessage
 		]);
 
 		return $replyMarkup;
+	}
+
+	public function createSearchResultNavButtons($currentPage, $currentPart, $totalPages, $totalPartsOnPage): array
+	{
+
 	}
 
 }
