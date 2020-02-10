@@ -20,15 +20,17 @@ class TelegramBotMessagesController extends Controller
 	public function longpoll()
 	{
 		$entity = Entity::findOrFail(2);
+
+
 		$status = $entity->status;
 		$attemps = 1;
-		$attempsLimit = 100;
+		$attempsLimit = 10;
+		$updates = Telegram::getUpdates();
 
 		while ($status === "PENDING" && $attemps <= $attempsLimit)
 		{
 			sleep(2);
 			$updates = Telegram::getUpdates();
-
 			if (count($updates) > 0)
 			{
 				foreach($updates as $update)
@@ -43,6 +45,7 @@ class TelegramBotMessagesController extends Controller
 
 				$status = $entity->refresh()->status;	
 				$attemps++;
+				/*
 				if ($attemps > $attempsLimit)
 				{
 					Telegram::sendMessage([
@@ -50,6 +53,7 @@ class TelegramBotMessagesController extends Controller
 						"text" => 'Long Poll is dead'
 						]);
 				}
+				*/
 			}
 		}
 
@@ -78,6 +82,7 @@ class TelegramBotMessagesController extends Controller
 		//$message = session()->get('message');
 		$chatId = $message['message']['chat']['id'];
 		$query = $message["message"]["text"];	
+		session(['query' => $query]);
 		$searchResult = ChcnnParsing::getBookList($query);
 		TelegramBookDataMessage::showSearchResult($chatId, $searchResult);
 	}
@@ -85,19 +90,35 @@ class TelegramBotMessagesController extends Controller
 	public function callback($message)
 	{
 		//$message = session()->get('message');
-		$data = explode(',', $message['callback_query']["data"]);
-		$query = $data[0];
-		$page = $data[1];
+		$callback_data = explode(',', $message['callback_query']["data"]);
 		$chatId = $message["callback_query"]['message']['chat']['id'];
 		$messageId = $message["callback_query"]['message']['message_id'];
-		$searchResult = ChcnnParsing::getBookList($query, $page);
-		$replyMarkup = TelegramBookDataMessage::createReplyMarkup($searchResult);
-		$response = Telegram::editMessageText([
+			
+		switch ($callback_data[0]) {
+			case 'empty':
+				break;
+			case 'searchResult':
+				$query = session('query');
+				$page = $callback_data[1];
+				$searchResult = ChcnnParsing::getBookList($query, $page);
+				$replyMarkup = TelegramBookDataMessage::createReplyMarkup($searchResult);
+				$response = Telegram::editMessageText([
 									"chat_id" => $chatId, 
 									"message_id" => $messageId,
 									"text" => 'New content',
 									"reply_markup" => $replyMarkup	
 									]);
+				break;
+			case 'bookCard':
+				$code = $callback_data[1];
+				$bookCard = ChcnnParsing::getBookCard($code);
+				TelegramBookDataMessage::showBookCard($chatId, $bookCard);
+				break;
+			default:
+				# code...
+				break;
+		}
+
 	}
 
 

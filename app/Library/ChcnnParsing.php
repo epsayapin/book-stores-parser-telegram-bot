@@ -18,7 +18,7 @@ class ChcnnParsing
 		{
 			$requestURL .= "&p=$currentPage";
 		}
-		$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
+		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
 		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/SinglePageResult.html";
 
 
@@ -72,6 +72,8 @@ class ChcnnParsing
 	{
 		
 		$author = [];
+		$pages = 'н/д';
+		$coverFormat = 'н/д';
 
 		$requestURL = self::$bookcard_url . $bookCode . '/';
 		//$requestURL = __DIR__ . '/../../tests/SearchPageExample/BookCardWitcher.html';

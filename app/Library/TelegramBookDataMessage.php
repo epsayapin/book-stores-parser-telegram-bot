@@ -18,20 +18,26 @@ class TelegramBookDataMessage
 		]);
 
 		$getMessageId = $response->getMessageId();
-		
+		/*
 		Telegram::sendMessage([
 			'chat_id' => $chatId,
 			'text' => "Current $searchResult->currentPage, Total $searchResult->countPages ID $getMessageId"
 		]);
+		*/
 	}
 
 	public static function showBookCard($chatId, BookCard $bookCard)
 	{
 		$message = "";
-		$message .= "Название - $bookCard->title";
-		$message .= "Автор - $bookCard->author[0]";
-		$message .= "Цена = $bookCard->price";
+		$message .= "_" . $bookCard->author[0] . "_\n";
+		$message .= "*$bookCard->title*\n";
+		$message .= $bookCard->price . "р.\n";
 
+		$response = Telegram::sendMessage([
+								'chat_id' => $chatId,
+								'text' => $message,
+								'parse_mode' => 'Markdown'
+								]);
 		
 	}
 
@@ -43,7 +49,7 @@ class TelegramBookDataMessage
 		$i = 1;
 		foreach($searchResult->bookList as $book)
 		{
-			$keyboard[][] = ['text' => "$i. " . $book['title'], 'callback_data' => $book['code']];
+			$keyboard[][] = ['text' => "$i. " . $book['title'], 'callback_data' => 'bookCard,' . $book['code']];
 			$i++;
 		}
 
@@ -51,13 +57,13 @@ class TelegramBookDataMessage
 
 		$keyboard[][] = ["text" => $fillStr, 'callback_data' => "epmty"];
 
-		
+		/*
 		$buttonPages = [
 				["text" => "Count $searchResult->countPages", "callback_data" => 'empty'],
 				["text" => "Current $searchResult->currentPage", "callback_data" => 'empty']
 		];
 		$keyboard[] = $buttonPages;
-		
+		*/
 
 		$navButtons = [
 					['text' => '*', 'callback_data' => 'empty'],
@@ -67,12 +73,12 @@ class TelegramBookDataMessage
 
 		if ($searchResult->currentPage < $searchResult->countPages)
 		{
-			$navButtons[1] = ['text' => '>', 'callback_data' => $searchResult->query . "," . ($searchResult->currentPage + 1)];
+			$navButtons[1] = ['text' => '>', 'callback_data' => 'searchResult,' . ($searchResult->currentPage + 1)];
 		}
 
 		if ($searchResult->currentPage > 1)
 		{
-			$navButtons[0] = ['text' => '<', 'callback_data' => $searchResult->query . ',' . ($searchResult->currentPage - 1)];
+			$navButtons[0] = ['text' => '<', 'callback_data' => 'searchResult,' . ($searchResult->currentPage - 1)];
 		}
 
 		$keyboard[] = $navButtons;
