@@ -10,42 +10,81 @@ use App\Library\ChcnnParsing;
 use App\Library\TelegramBookDataMessage;
 
 use \App\Entity;
-
+use \App\Update;
 
 
 class TelegramBotMessagesController extends Controller
 {
     //
 
-	public function handle()
+	public function longpoll()
 	{
-		$message = session()->get('message');
+		$entity = Entity::findOrFail(2);
+		$status = $entity->status;
+		$attemps = 1;
+		$attempsLimit = 100;
+
+		while ($status === "PENDING" && $attemps <= $attempsLimit)
+		{
+			sleep(2);
+			$updates = Telegram::getUpdates();
+
+			if (count($updates) > 0)
+			{
+				foreach($updates as $update)
+				{
+					if(Update::where('update_id',$update["update_id"])->count() == 0) 
+					{
+					Update::create(["update_id" => $update["update_id"]]);
+					self::handle($update);
+					}	
+				}
+				
+
+				$status = $entity->refresh()->status;	
+				$attemps++;
+				if ($attemps > $attempsLimit)
+				{
+					Telegram::sendMessage([
+						"chat_id" => $chatId,
+						"text" => 'Long Poll is dead'
+						]);
+				}
+			}
+		}
+
+		return $updates;
+	}
+
+	public function handle($message)
+	{
+		//$message = session()->get('message');
 		
 		if (isset($message["callback_query"]))
 		{
-			return redirect()->route('callback')->with(['message' => $message]);
+			self::callback($message);
 		}
 
 		if (isset($message["message"]["text"]) && ! isset($lastMessage["message"]["entities"][0]['type']))
 		{
-			return redirect()->route('message')->with(['message' => $message]);
+			self::message($message);
 		}
 
 
 	}
 
-	public function message()
+	public function message($message)
 	{
-		$message = session()->get('message');
+		//$message = session()->get('message');
 		$chatId = $message['message']['chat']['id'];
 		$query = $message["message"]["text"];	
 		$searchResult = ChcnnParsing::getBookList($query);
 		TelegramBookDataMessage::showSearchResult($chatId, $searchResult);
 	}
 
-	public function callback()
+	public function callback($message)
 	{
-		$message = session()->get('message');
+		//$message = session()->get('message');
 		$data = explode(',', $message['callback_query']["data"]);
 		$query = $data[0];
 		$page = $data[1];
