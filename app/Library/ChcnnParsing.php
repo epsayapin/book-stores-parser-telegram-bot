@@ -11,8 +11,21 @@ class ChcnnParsing
 	public static $partsOnPage = 4;
 	public static $partSize = 6;
 
-	public static function getBookList(String $query, int $currentPage = 1, int $resultPart = 1): SearchResult
+	public static function getBookList(String $query, int $currentPage = 1, int $currentPart = 1): SearchResult
 	{
+
+		if($currentPart > self::$partsOnPage)
+		{
+			$currentPart = 1;
+			$currentPage += 1;
+		}
+
+		if($currentPart == 0)
+		{
+			$currentPart = self::$partsOnPage;
+			$currentPage -= 1;
+
+		}
 
 
 		$requestURL = self::$search_url . urlencode($query); 
@@ -39,14 +52,16 @@ class ChcnnParsing
 		$productsArray = $crawler->filter(".products .row .product");
 		$productsCount = count($productsArray);
 
+
 		$startPosition = [
 					1 => 0,
 					2 => 6,
 					3 => 12,
 					4 => 18
 				];
+		$totalParts = $productsCount % self::$partSize;
 
-		$i = $startPosition[$resultPart];
+		$i = $startPosition[$currentPart];
 		$k = $i + self::$partSize - 1;
 		if($productsCount < $k)
 		{
@@ -71,17 +86,18 @@ class ChcnnParsing
 
 		if(count($crawler->filter(".paginator .links a")) > 0)
 		{
-			$countPages = $crawler->filter(".paginator .links a")->last()->html();
+			$totalPages = $crawler->filter(".paginator .links a")->last()->html();
 			
 		}else{
-			$countPages = 1;
+			$totalPages = 1;
 		}
 		
 		$searchResult = new SearchResult(
 					$bookList,
-					(int)$currentPage,
-					(int)$countPages,
-					$resultPart,
+					$currentPage,
+					$totalPages,
+					$currentPart,
+					$totalParts,
 					$query
 						);
 		return $searchResult;
@@ -91,7 +107,9 @@ class ChcnnParsing
 	public static function getBookCard(String $bookCode): BookCard
 	{
 		
-		$author = [];
+		$author = [
+					0 => 'н/д'
+				];
 		$pages = 'н/д';
 		$coverFormat = 'н/д';
 
@@ -104,10 +122,11 @@ class ChcnnParsing
 		$str = $doc->saveHTML();
 
 		$crawler = new Crawler($str);
-
-
 		$title = $crawler->filter('.product_text h1')->text();
-		$author[] = $crawler->filter('a.author')->text();
+		if($author[] = $crawler->filter('a.author')) 
+			{
+				$author[0] = $crawler->filter('a.author')->text();
+			}
 		$price = $crawler->filter('.price strong ')->text();
 		$code =	$crawler->filter('.product_text table tr')->first()->filter('td')->last()->text();
 
@@ -119,7 +138,7 @@ class ChcnnParsing
 			switch ($productTable->eq($i)->text()) {
 				case 'Кол-во страниц':
 					# code...
-				$pages = $productTable->eq($i+1)->text();
+					$pages = $productTable->eq($i+1)->text();
 					break;
 				case 'Оформление':
 					$coverFormat = $productTable->eq($i+1)->text();
@@ -129,7 +148,12 @@ class ChcnnParsing
 			}
 
 		}
-		$bookCard = new BookCard($title, $author, (int)$price, $coverFormat, $code, (int)$pages);
+		$bookCard = new BookCard($title, 
+								$author, 
+								(int)$price, 
+								$code, 
+								$coverFormat, 
+								$pages);
 		return $bookCard;
 	}
 

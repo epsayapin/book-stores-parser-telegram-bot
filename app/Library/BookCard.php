@@ -14,15 +14,16 @@ class BookCard
 			string 	$title,
 			array 	$author,
 			int 	$price,
-			string 	$coverFormat,
 			string 	$code,
-			int 	$countPages
+			string 	$coverFormat,
+			string 	$countPages 
 	)
 	{
 		$this->title = $title;
 		$this->author = $author;
 		$this->price = $price;
-		$this->coverFormat = $code;
+		$this->coverFormat = $coverFormat;
+		$this->code = $code;
 		$this->countPages = $countPages;
 
 	}

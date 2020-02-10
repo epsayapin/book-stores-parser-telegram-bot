@@ -106,7 +106,7 @@ class TelegramBotMessagesController extends Controller
 				$response = Telegram::editMessageText([
 									"chat_id" => $chatId, 
 									"message_id" => $messageId,
-									"text" => 'New content',
+									"text" => 'Вот что удалось найти',
 									"reply_markup" => $replyMarkup	
 									]);
 				break;

@@ -5,17 +5,19 @@ class SearchResult
 {
 	public $bookList;
 	public $currentPage;
-	public $countPages;
-	public $resultPart;
+	public $totalPages;
+	public $currentPart;
+	public $totalParts;
 	public $query;
 
-	public function __construct(Array $bookList, $currentPage, int $countPages, int $resultPart, string $query)
+	public function __construct(Array $bookList, $currentPage, int $totalPages, int $currentPart, $totalParts, string $query)
 	{
 
 		$this->bookList = $bookList;
 		$this->currentPage = $currentPage;
-		$this->countPages = $countPages;
-		$this->resultPart = $resultPart;
+		$this->totalPages = $totalPages;
+		$this->currentPart = $currentPart;
+		$this->totalParts = $totalParts;
 		$this->query = $query;
 	}
 }

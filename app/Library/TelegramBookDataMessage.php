@@ -29,9 +29,11 @@ class TelegramBookDataMessage
 	public static function showBookCard($chatId, BookCard $bookCard)
 	{
 		$message = "";
-		$message .= "_" . $bookCard->author[0] . "_\n";
+		$message .= "_" . $bookCard->author[0] . "_ $bookCard->code\n";
 		$message .= "*$bookCard->title*\n";
-		$message .= $bookCard->price . "р.\n";
+		$message .= "📕$bookCard->coverFormat\n";
+		$message .= "📃" . $bookCard->countPages . "с.\n";
+		$message .= "Цена в интернет магазине: " . $bookCard->price . "р.\n";
 
 		$response = Telegram::sendMessage([
 								'chat_id' => $chatId,
@@ -48,10 +50,11 @@ class TelegramBookDataMessage
 
 		$i = 1;
 		foreach($searchResult->bookList as $book)
-		{
-			$keyboard[][] = ['text' => "$i. " . $book['title'], 'callback_data' => 'bookCard,' . $book['code']];
-			$i++;
-		}
+			{
+				$keyboard[][] = [	'text' => "$i. " . $book['title'], 
+									'callback_data' => 'bookCard,' . $book['code']];
+				$i++;
+			}
 
 		$fillStr = "................................................................................";
 
@@ -71,29 +74,23 @@ class TelegramBookDataMessage
 		];
 
 
-		if ($searchResult->currentPage < $searchResult->countPages)
-		{
-			$navButtons[1] = ['text' => '>', 'callback_data' => 'searchResult,' . ($searchResult->currentPage + 1 . "," . $searchResult->resultPart + 1)];
-		}
+		if (($searchResult->totalPages > $searchResult->currentPage)||($searchResult->totalPages > $searchResult->currentPage))
+			{
+				$navButtons[1] = ['text' => '>', 'callback_data' => 'searchResult,' . ($searchResult->currentPage . "," . ($searchResult->currentPart + 1))];
+			}
 
-		if (($searchResult->currentPage > 1)||($searchResult->resultPart > 1))
-		{
-			$navButtons[0] = ['text' => '<', 'callback_data' => 'searchResult,' . ($searchResult->currentPage - 1 . "," . $searchResult->resultPart - 1)];
-		}
+		if (($searchResult->currentPage > 1)||($searchResult->currentPart > 1))
+			{
+				$navButtons[0] = ['text' => '<', 'callback_data' => 'searchResult,' . $searchResult->currentPage . "," . ($searchResult->currentPart - 1)];
+			}
 
 		$keyboard[] = $navButtons;
 
-
 		$replyMarkup = Telegram::replyKeyboardMarkup([
-			'inline_keyboard' => $keyboard
-		]);
+						'inline_keyboard' => $keyboard
+						]);
 
 		return $replyMarkup;
-	}
-
-	public function createSearchResultNavButtons($currentPage, $currentPart, $totalPages, $totalPartsOnPage): array
-	{
-
 	}
 
 }
