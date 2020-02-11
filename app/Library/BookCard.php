@@ -11,19 +11,21 @@ class BookCard
 	public $countPages;
 
 	public function __construct(
-			string 	$title,
-			array 	$author,
-			int 	$price,
-			string 	$code,
-			string 	$coverFormat,
-			string 	$countPages 
+			string 	$title = 'н/д',
+			array 	$author = ['н/д'],
+			string 	$internetPrice = 'н/д',
+			string	$localPrice = 'н/д',
+			string 	$code = 'н/д',
+			string 	$coverFormat = 'н/д',
+			string 	$countPages = 'н/д' 
 	)
 	{
 		$this->title = $title;
 		$this->author = $author;
-		$this->price = $price;
-		$this->coverFormat = $coverFormat;
+		$this->internetPrice = $internetPrice;
+		$this->localPrice = $localPrice;
 		$this->code = $code;
+		$this->coverFormat = $coverFormat;
 		$this->countPages = $countPages;
 
 	}

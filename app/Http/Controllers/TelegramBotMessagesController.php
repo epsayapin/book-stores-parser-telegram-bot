@@ -83,7 +83,7 @@ class TelegramBotMessagesController extends Controller
 		$chatId = $message['message']['chat']['id'];
 		$query = $message["message"]["text"];	
 		session(['query' => $query]);
-		$searchResult = ChcnnParsing::getBookList($query);
+		$searchResult = ChcnnParsing::getSearchResult($query);
 		TelegramBookDataMessage::showSearchResult($chatId, $searchResult);
 	}
 
@@ -101,7 +101,7 @@ class TelegramBotMessagesController extends Controller
 				$query = session('query');
 				$page = $callback_data[1];
 				$part = $callback_data[2];
-				$searchResult = ChcnnParsing::getBookList($query, $page, $part);
+				$searchResult = ChcnnParsing::getSearchResult($query, $page, $part);
 				$replyMarkup = TelegramBookDataMessage::createReplyMarkup($searchResult);
 				$response = Telegram::editMessageText([
 									"chat_id" => $chatId, 

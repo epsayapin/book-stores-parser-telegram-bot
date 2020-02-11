@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-require_once 'app/Library/ChcnnParsing.php';
+//require_once 'app/Library/ChcnnParsing.php';
 
-use App\Library\ChcnnParsing as ChcnnParsing;
+use App\Library\ChcnnParsing;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -19,38 +19,36 @@ class ChcnnParsingTest extends TestCase
      * @return void
      */
 
-        public function testChcnnSearchUrlExists()
+        public function testChcnnSearchUrlShouldBeExists()
         {
             $this->assertTrue(!(ChcnnParsing::$search_url == ""));
         }
 
-        public function testChcnnParsingClassShouldExists()
+        public function xxtestChcnnParsingClassShouldExists()
     {
-        
-        $this->assertTrue(class_exists('\App\Library\ChcnnParsing'));
+        $this->assertTrue(class_exists('ChcnnParsing'));
+        echo "\nClass ChcnnParsing Exists\n";
 
     }
 
-    public function testGetBookListMustReturnBookList()
+    public function testGetSearchResultMustReturnSearchResult()
     {
 
-        $searchQuerys = ['Ведьмак', 'Портнягин', 'Сорокин', 'Гарри Поттер',
-                    'Стив Джобс', 'Пушкин', 'Достоевский', 'Алексей Иванов', 'Пелевин', 'Воннегут'];
+        $searchQuerys = ['Ведьмак', 'Сорокин', 'Гарри Поттер',
+                    'Пушкин', 'Достоевский', 'Иванов', 'Пелевин', 'Воннегут'];
 
         $searchQuery = $searchQuerys[rand(0, count($searchQuerys) - 1)];
+        echo "\nUsed query - " . $searchQuery . "\n";
 
-        $searchResult =ChcnnParsing::getBookList($searchQuery);
+        $searchResult =ChcnnParsing::getSearchResult($searchQuery);
         $bookList = $searchResult->bookList;
 
-
-       //$jsonString = $response->getBody();
-      //  $bodyAsArray = json_decode($jsonString, true);
         $this->assertTrue(isset($searchResult->bookList));
         $this->assertTrue(isset($searchResult->currentPage));
-        $this->assertTrue(isset($searchResult->countPages));
+        $this->assertTrue(isset($searchResult->totalPages));
 
-        $this->assertEquals(24, count($searchResult->bookList));
-        $this->assertGreaterThan(0, $searchResult->countPages);
+        $this->assertEquals(ChcnnParsing::$partSize, count($searchResult->bookList));
+        $this->assertGreaterThan(0, $searchResult->totalPages);
 
         foreach($bookList as $book)
         {
@@ -60,7 +58,7 @@ class ChcnnParsingTest extends TestCase
 
     }
 
-    public function xxtestgetBookCardShouldReturnBookCard()
+    public function testGetBookCardShouldReturnBookCard()
     {
 
         $bookCodes = [
@@ -77,32 +75,39 @@ class ChcnnParsingTest extends TestCase
             ];
 
         $code = $bookCodes[rand(0, count($bookCodes) - 1)];
+        echo "\nUsed code - " . $code . "\n";
 
-        $bookcard = \App\Library\ChcnnParsing::getBookCard($code);
+        $bookcard = ChcnnParsing::getBookCard($code);
 
-        echo "Used code $code";
-
-        $propertyList = ['author', 'price', 'title', 'code', 'coverFormat', 'pages' ];
-
-        foreach($propertyList as $property)
+        $propertyListString = ['author', 'title', 'code', 'coverFormat', 'countPages' ];
+        $propertyListInt = ['price' ];
+        foreach($propertyListString as $property)
         {
-            $this->assertTrue(isset($bookcard[$property]), "\n -- $property don't exists");
+            $this->assertTrue(isset($bookcard->$property), "\n -- $property don't exists");
             if (!($property == 'author'))
             {
-            $this->assertNotEquals("", $bookcard[$property], "\n -- $property empty");
+            $this->assertNotEquals("", $bookcard->$property[0], "\n -- $property empty");
             }
         }
 
-        $this->assertGreaterThan(0, count($bookcard['author']));
+        foreach($propertyListInt as $property)
+        {
+            $this->assertTrue(isset($bookcard->$property));
+            $this->assertNotEquals(0, $bookcard->$property, "\n -- $property equal zero");
+
+        }
+
+
+
+        $this->assertGreaterThan(0, count($bookcard->author));
     
     }
 
     public function testSinglePageResultsShouldHandleCorrect()
     {
         $query = 'Cobain';
-        $searchResult = ChcnnParsing::getBookList($query);
-        $this->assertGreaterThan(0, $searchResult->countPages);
-
+        $searchResult = ChcnnParsing::getSearchResult($query);
+        $this->assertGreaterThan(0, $searchResult->totalPages);
     }
 
 }

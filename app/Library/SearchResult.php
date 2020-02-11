@@ -10,7 +10,12 @@ class SearchResult
 	public $totalParts;
 	public $query;
 
-	public function __construct(Array $bookList, $currentPage, int $totalPages, int $currentPart, $totalParts, string $query)
+	public function __construct(Array $bookList, 
+							int $currentPage, 
+							int $totalPages, 
+							int $currentPart, 
+							int $totalParts, 
+							string $query)
 	{
 
 		$this->bookList = $bookList;

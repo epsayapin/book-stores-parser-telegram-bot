@@ -11,8 +11,10 @@ class ChcnnParsing
 	public static $partsOnPage = 4;
 	public static $partSize = 6;
 
-	public static function getBookList(String $query, int $currentPage = 1, int $currentPart = 1): SearchResult
+	public static function getSearchResult(String $query, int $currentPage = 1, int $currentPart = 1): SearchResult
 	{
+
+		//На основе запрошенной части выдачи $currentPart уточнняем нужно ли перейти на следующую страницу поисковой выдачи  или же вернуться назад 
 
 		if($currentPart > self::$partsOnPage)
 		{
@@ -27,23 +29,18 @@ class ChcnnParsing
 
 		}
 
+		//Рассчитыаем URL для парсинга
 
-		$requestURL = self::$search_url . urlencode($query); 
+		$requestURL = self::$search_url . urlencode($query);
 		if ($currentPage > 1)
-		{
-			$requestURL .= "&p=$currentPage";
-		}
-		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
-		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/SinglePageResult.html";
+			{
+				$requestURL .= "&p=$currentPage";
+			}
 
+		//Парсим страницу и генерируем массив с книгами
 
-		$bookList = [];
-		$currentPage;
-		$countPages;
-		
 		$doc = new \DOMDocument();
 		libxml_use_internal_errors(true);
-		$filepath = __DIR__ . '/../../../resources/test_data/search_results.html';
 		$doc->loadHTMLFile($requestURL);
 		$str = $doc->saveHTML();
 		libxml_use_internal_errors(false);
@@ -52,54 +49,71 @@ class ChcnnParsing
 		$productsArray = $crawler->filter(".products .row .product");
 		$productsCount = count($productsArray);
 
-
-		$startPosition = [
-					1 => 0,
-					2 => 6,
-					3 => 12,
-					4 => 18
-				];
-		$totalParts = $productsCount % self::$partSize;
-
-		$i = $startPosition[$currentPart];
-		$k = $i + self::$partSize - 1;
-		if($productsCount < $k)
-		{
-			$k = $productsCount - 1;
-		}		
-
-		for($i; $i<=$k; $i++)
-		{
-
-			if($productsArray->eq($i))
+		$bookList = [];
+		if($productsCount > 0)
 			{
-			$book = [];
-			$book["title"] = $productsArray->eq($i)->filter('.title')->text();
-			$link = $productsArray->eq($i)->filter(".title")->attr('href');
-			preg_match('/\d*.$/', $link, $code);
-			$book['code'] = str_replace("/", '', $code[0]); 
+			//Рассчитываем начальную и последнюю позицию в массиве книг для формирования итогового списка
 
-			$bookList[] = $book;
+			$partNumberAndStartPosition = [
+						1 => 0,
+						2 => 6,
+						3 => 12,
+						4 => 18
+					];
+			$startPosition = $partNumberAndStartPosition[$currentPart]; 				
+			$finalPosition = $startPosition + self::$partSize - 1; 
+
+			//На  случай если выбранная часть поисковой выдачи меньше стандартного размера, то есть результатов выдачи меньше 
+
+			if($productsCount < $finalPosition)
+			{
+				$finalPosition = $productsCount - 1;
+			}		
+
+			//Парсим список книг
+
+			for($i = $startPosition; $i<=$finalPosition; $i++)
+			{
+
+				if($productsArray->eq($i))
+				{
+				$book = [];
+				$book["title"] = $productsArray->eq($i)->filter('.title')->text();
+				$link = $productsArray->eq($i)->filter(".title")->attr('href');
+				preg_match('/\d*.$/', $link, $code);
+				$book['code'] = str_replace("/", '', $code[0]); 
+
+				$bookList[] = $book;
+				}
 			}
 		}
+		//Собираем общую инфморацию о поисковой выдаче
 
-
-		if(count($crawler->filter(".paginator .links a")) > 0)
+		$totalParts = $productsCount % self::$partSize;
+		$paginatorCount = count($crawler->filter(".paginator .links a")); 
+		if( $paginatorCount > 0)
 		{
+
 			$totalPages = $crawler->filter(".paginator .links a")->last()->html();
+			if($totalPages == 0)
+			{
+				$totalPages = $crawler->filter(".paginator .links a")->eq($paginatorCount - 2)->html();
+			}
 			
 		}else{
 			$totalPages = 1;
 		}
+
+		//Формируем ответ
 		
 		$searchResult = new SearchResult(
-					$bookList,
-					$currentPage,
-					$totalPages,
-					$currentPart,
-					$totalParts,
-					$query
-						);
+										$bookList,
+										(int)$currentPage,
+										(int)$totalPages,
+										(int)$currentPart,
+										(int)$totalParts,
+										$query
+									);
 		return $searchResult;
 
 	}
@@ -107,54 +121,64 @@ class ChcnnParsing
 	public static function getBookCard(String $bookCode): BookCard
 	{
 		
-		$author = [
-					0 => 'н/д'
-				];
+		$author = [0 => 'н/д'];
 		$pages = 'н/д';
 		$coverFormat = 'н/д';
 
 		$requestURL = self::$bookcard_url . $bookCode . '/';
-		//$requestURL = __DIR__ . '/../../tests/SearchPageExample/BookCardWitcher.html';
 
 		$doc = new \DOMDocument();
+
 		libxml_use_internal_errors(true);
 		$doc->loadHTMLFile($requestURL);
-		$str = $doc->saveHTML();
+		libxml_use_internal_errors(false);
+		try{
+			$str = $doc->saveHTML();
+			$crawler = new Crawler($str);
+			$title = $crawler->filter('.product_text h1')->text();
+			if($crawler->filter('a.author')) 
+				{
+					$author[0] = $crawler->filter('a.author')->text();
+				}
+			$internetPrice = $crawler->filter('.price strong ')->text();
+			$localPrice = $crawler->filter(".rozn .price strong")->text();
+			$code =	$crawler->filter('.product_text table tr')->first()->filter('td')->last()->text();
 
-		$crawler = new Crawler($str);
-		$title = $crawler->filter('.product_text h1')->text();
-		if($author[] = $crawler->filter('a.author')) 
+			$productInfoTable = $crawler->filter('.product_text table tr td');
+			$countRows = count($productInfoTable);
+
+			for($i = 0; $i < $countRows; $i++)
 			{
-				$author[0] = $crawler->filter('a.author')->text();
+				switch ($productInfoTable->eq($i)->text()) {
+					case 'Кол-во страниц':
+						# code...
+						$pages = $productInfoTable->eq($i+1)->text();
+						break;
+					case 'Оформление':
+						$coverFormat = $productInfoTable->eq($i+1)->text();
+					default:
+						# code...
+						break;
+				}
+
 			}
-		$price = $crawler->filter('.price strong ')->text();
-		$code =	$crawler->filter('.product_text table tr')->first()->filter('td')->last()->text();
-
-		$productTable = $crawler->filter('.product_text table tr td');
-		$countRows = count($productTable);
-
-		for($i = 0; $i < $countRows; $i++)
+		}
+		catch(InvalidArgumentException $e)
 		{
-			switch ($productTable->eq($i)->text()) {
-				case 'Кол-во страниц':
-					# code...
-					$pages = $productTable->eq($i+1)->text();
-					break;
-				case 'Оформление':
-					$coverFormat = $productTable->eq($i+1)->text();
-				default:
-					# code...
-					break;
-			}
+			echo ("Ошибка - Не удалось собрать информацию о книге \n");
+			return new BookCard();
 
 		}
+
 		$bookCard = new BookCard($title, 
 								$author, 
-								(int)$price, 
+								$internetPrice,
+								$localPrice,
 								$code, 
 								$coverFormat, 
 								$pages);
 		return $bookCard;
+
 	}
 
 }

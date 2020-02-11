@@ -32,14 +32,22 @@ class TelegramBookDataMessage
 		$message .= "_" . $bookCard->author[0] . "_ $bookCard->code\n";
 		$message .= "*$bookCard->title*\n";
 		$message .= "📕$bookCard->coverFormat\n";
-		$message .= "📃" . $bookCard->countPages . "с.\n";
-		$message .= "Цена в интернет магазине: " . $bookCard->price . "р.\n";
+		$message .= "📃" . $bookCard->countPages . " с.\n";
+		$message .= "Цена в интернет магазине: " . $bookCard->internetPrice . "р.\n";
+		$message .= "Цена в локальном магазине: " . $bookCard->localPrice . "р.\n";
 
+		$keyboard[][] = ['text' => 'Открыть на сайте', 'url' => ChcnnParsing::$bookcard_url . "$bookCard->code"];
+		$replyMarkup = Telegram::replyKeyboardMarkup([
+			'inline_keyboard' =>  $keyboard
+		]);
+		
 		$response = Telegram::sendMessage([
 								'chat_id' => $chatId,
 								'text' => $message,
-								'parse_mode' => 'Markdown'
+								'parse_mode' => 'Markdown',
+								'reply_markup' => $replyMarkup
 								]);
+
 		
 	}
 
