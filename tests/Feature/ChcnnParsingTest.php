@@ -110,4 +110,9 @@ class ChcnnParsingTest extends TestCase
         $this->assertGreaterThan(0, $searchResult->totalPages);
     }
 
+    public function testGetStoresListInStockShouldReturnArray()
+    {
+        
+    }
+
 }

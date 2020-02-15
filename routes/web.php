@@ -29,3 +29,5 @@ Route::get('/entity/{entityId}', function($entityId)
 Route::get('/handle', "TelegramBotMessagesController@handle")->name('handle');
 Route::get('/message', "TelegramBotMessagesController@message")->name('message');
 Route::get('/callback', "TelegramBotMessagesController@callback")->name('callback');
+
+Route::get('/storeslist', "ChcnnParsingController@getStoresListInStock");

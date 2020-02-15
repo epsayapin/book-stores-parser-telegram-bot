@@ -10,6 +10,7 @@ class ChcnnParsing
 	public static $bookcard_url = 'https://chaconne.ru/product/';
 	public static $partsOnPage = 4;
 	public static $partSize = 6;
+	public static $storesInStockUrl = "https://chaconne.ru/block/nalich.php?id=";
 
 	public static function getSearchResult(String $query, int $currentPage = 1, int $currentPart = 1): SearchResult
 	{
@@ -179,6 +180,31 @@ class ChcnnParsing
 								$pages);
 		return $bookCard;
 
+	}
+
+	public static function getStoresListInStock($code)
+	{
+		$storesInStockUrl = "/storesInStock.html";
+
+		$doc = new \DOMDocument();
+		libxml_use_internal_errors(true);
+		$doc->loadHTMLFile($storesInStockUrl);
+		libxml_use_internal_errors(false);
+
+		$str = $doc->saveHTML();
+/*
+		$crawler = new Crawler($str);
+		$storesInStockCrawler = $crawler->filter('.page_content .shops row .filials-city1 .shop');
+
+		$storesList = [];
+
+		$storesInStockCrawlerCount = count($crawler->filter('.page_content'));
+		for($i=1; $i <= $storesInStockCrawlerCount; $i++)
+		{
+			$storesList[] = $storesInStockCrawler->eq($i)->text();
+		}
+*/
+		return $str;
 	}
 
 }
