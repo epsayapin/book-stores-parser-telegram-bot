@@ -36,8 +36,8 @@ class TelegramBookDataMessage
 		$message .= "Цена в интернет магазине: " . $bookCard->internetPrice . "р.\n";
 		$message .= "Цена в локальном магазине: " . $bookCard->localPrice . "р.\n";
 
-		$keyboard[][] = ['text' => 'Открыть на сайте', 'url' => ChcnnParsing::$bookcard_url . "$bookCard->code"];
-		$keyboard[][] = ['text' => 'Наличие', 'callback_data' => 'storesListInStock,' . $bookCard->code];
+		$keyboard[] = [['text' => 'Наличие', 'callback_data' => 'storesListInStock,' . $bookCard->code],['text' => 'Открыть на сайте', 'url' => ChcnnParsing::$bookcard_url . "$bookCard->code"]];
+		
 		$replyMarkup = Telegram::replyKeyboardMarkup([
 			'inline_keyboard' =>  $keyboard
 		]);
@@ -102,24 +102,54 @@ class TelegramBookDataMessage
 		return $replyMarkup;
 	}
 
-	public static function addStoresListInStock($chatId, $messageId, $storesList)
+	public static function addStoresListInStock($chatId, $messageId, $code)
 	{
 		//$storesList = ChcnnParsing::getStoresListInStock($code);
+		
+		$bookCard = ChcnnParsing::getBookCard($code);
+		$storesList = ChcnnParsing::getStoresListInStock($code);
 
+		$message = "";
+		$message .= "_" . $bookCard->author[0] . "_ $bookCard->code\n";
+		$message .= "*$bookCard->title*\n";
+		$message .= "📕$bookCard->coverFormat\n";
+		$message .= "📃" . $bookCard->countPages . " с.\n";
+		$message .= "Цена в интернет магазине: " . $bookCard->internetPrice . "р.\n";
+		$message .= "Цена в локальном магазине: " . $bookCard->localPrice . "р.\n";
 
-		$text = "";
+		$message .= "\n*Магазины*\n";
 
-		foreach($storesList as $store)
+		date_default_timezone_set('Europe/Samara');
+		$date = date('m/d/Y H:i:s', time());
+
+		$message .= "Состояние на " . $date;
+		$message .= "\n";
+
+		if(count($storesList) >0)
 		{
-			$text .= $store["title"] . "\n";
+			foreach($storesList as $store)
+			{
+				$message .= $store["title"] . "\n";
+				$message .= $store["phone"] . "\n";
+			}
+				$message .= "_Важно уточнить фактическое наличие звонком_";
+		}else{
+			$message .= "Не числится в наличии";
 		} 
 
-		$response = Telegram::editMessageText([
 
+		$keyboard[] = [['text' => 'Наличие', 'callback_data' => 'storesListInStock,' . $bookCard->code], ['text' => 'Открыть на сайте', 'url' => ChcnnParsing::$bookcard_url . "$bookCard->code"]];
+
+		$replyMarkup = Telegram::replyKeyboardMarkup([
+			'inline_keyboard' =>  $keyboard
+		]);
+		
+		$response = Telegram::editMessageText([
 			'chat_id' => $chatId,
 			'message_id' => $messageId,
-			'text' => $text
-
+			'text' => $message,
+			'parse_mode' => 'Markdown',
+			'reply_markup' => $replyMarkup
 		]);
 
 	}

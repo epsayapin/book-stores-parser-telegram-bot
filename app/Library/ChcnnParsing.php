@@ -142,7 +142,13 @@ class ChcnnParsing
 					$author[0] = $crawler->filter('a.author')->text();
 				}
 			$internetPrice = $crawler->filter('.price strong ')->text();
-			$localPrice = $crawler->filter(".rozn .price strong")->text();
+			if($crawler->filter(".rozn .price strong"))
+			{
+				$localPrice = $crawler->filter(".rozn .price strong")->text();
+			}else{
+				$localPrice = "н/д";
+			}
+
 			$code =	$crawler->filter('.product_text table tr')->first()->filter('td')->last()->text();
 
 			$productInfoTable = $crawler->filter('.product_text table tr td');
@@ -186,10 +192,11 @@ class ChcnnParsing
 	{
 		//Если в наличии - data-nalich="1" иначе - 3
 
-		//$storesInStockUrl = __DIR__ . "/../../tests/SearchPageExample/storesInStock.html";
-		$code = "4052579";
-		
+
 		$storesInStockUrl = self::$storesInStockUrl . $code;
+		
+		//$code = "4052579";
+		//$storesInStockUrl = __DIR__ . "/../../tests/SearchPageExample/storesInStock.html";
 
 		$doc = new \DOMDocument();
 		libxml_use_internal_errors(true);
@@ -210,7 +217,8 @@ class ChcnnParsing
 			if ($storesInStockCrawler->eq($i)->attr('data-nalich') == "1")
 			{ 
 				$storeTitle = $storesInStockCrawler->eq($i)->filter('.title')->text();
-				$storesList[] = ["title" => $storeTitle, "phone" => 'phone'];
+				$storePhone = $storesInStockCrawler->eq($i)->filter('a.unstyled')->text(); 
+				$storesList[] = ["title" => $storeTitle, "phone" => $storePhone];
 			}
 		}
 
