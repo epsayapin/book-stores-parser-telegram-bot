@@ -5,5 +5,5 @@
 @endforeach
 </ul>
 
-<p>Total page is {{ $searchResult->countPages }} </p>
+<p>Total page is {{ $searchResult->totalPages }} </p>
 <p>Current page is {{ $searchResult->currentPage }} </p>

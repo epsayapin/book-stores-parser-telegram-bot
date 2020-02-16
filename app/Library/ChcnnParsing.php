@@ -37,7 +37,7 @@ class ChcnnParsing
 			{
 				$requestURL .= "&p=$currentPage";
 			}
-
+		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
 		//Парсим страницу и генерируем массив с книгами
 
 		$doc = new \DOMDocument();
@@ -182,9 +182,14 @@ class ChcnnParsing
 
 	}
 
-	public static function getStoresListInStock($code)
+	public static function getStoresListInStock($code): array
 	{
-		$storesInStockUrl = "/storesInStock.html";
+		//Если в наличии - data-nalich="1" иначе - 3
+
+		//$storesInStockUrl = __DIR__ . "/../../tests/SearchPageExample/storesInStock.html";
+		$code = "4052579";
+		
+		$storesInStockUrl = self::$storesInStockUrl . $code;
 
 		$doc = new \DOMDocument();
 		libxml_use_internal_errors(true);
@@ -192,19 +197,24 @@ class ChcnnParsing
 		libxml_use_internal_errors(false);
 
 		$str = $doc->saveHTML();
-/*
+
 		$crawler = new Crawler($str);
-		$storesInStockCrawler = $crawler->filter('.page_content .shops row .filials-city1 .shop');
+		$storesInStockCrawler = $crawler->filter('.filials-city1 .shop');
 
 		$storesList = [];
 
-		$storesInStockCrawlerCount = count($crawler->filter('.page_content'));
-		for($i=1; $i <= $storesInStockCrawlerCount; $i++)
+		$storesInStockCrawlerCount = count($crawler->filter('.filials-city1 .shop'));
+
+		for($i=0; $i <= $storesInStockCrawlerCount - 1; $i++)
 		{
-			$storesList[] = $storesInStockCrawler->eq($i)->text();
+			if ($storesInStockCrawler->eq($i)->attr('data-nalich') == "1")
+			{ 
+				$storeTitle = $storesInStockCrawler->eq($i)->filter('.title')->text();
+				$storesList[] = ["title" => $storeTitle, "phone" => 'phone'];
+			}
 		}
-*/
-		return $str;
+
+		return $storesList;
 	}
 
 }

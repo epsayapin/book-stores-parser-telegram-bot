@@ -37,6 +37,7 @@ class TelegramBookDataMessage
 		$message .= "Цена в локальном магазине: " . $bookCard->localPrice . "р.\n";
 
 		$keyboard[][] = ['text' => 'Открыть на сайте', 'url' => ChcnnParsing::$bookcard_url . "$bookCard->code"];
+		$keyboard[][] = ['text' => 'Наличие', 'callback_data' => 'storesListInStock,' . $bookCard->code];
 		$replyMarkup = Telegram::replyKeyboardMarkup([
 			'inline_keyboard' =>  $keyboard
 		]);
@@ -101,4 +102,25 @@ class TelegramBookDataMessage
 		return $replyMarkup;
 	}
 
+	public static function addStoresListInStock($chatId, $messageId, $storesList)
+	{
+		//$storesList = ChcnnParsing::getStoresListInStock($code);
+
+
+		$text = "";
+
+		foreach($storesList as $store)
+		{
+			$text .= $store["title"] . "\n";
+		} 
+
+		$response = Telegram::editMessageText([
+
+			'chat_id' => $chatId,
+			'message_id' => $messageId,
+			'text' => $text
+
+		]);
+
+	}
 }

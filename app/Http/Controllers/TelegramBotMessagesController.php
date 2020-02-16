@@ -115,6 +115,11 @@ class TelegramBotMessagesController extends Controller
 				$bookCard = ChcnnParsing::getBookCard($code);
 				TelegramBookDataMessage::showBookCard($chatId, $bookCard);
 				break;
+			case 'storesListInStock':
+				$code = $callback_data[1];
+				$storesList = ChcnnParsing::getStoresListInStock($code);
+				TelegramBookDataMessage::addStoresListInStock($chatId, $messageId, $storesList);
+				break;
 			default:
 				# code...
 				break;

@@ -19,7 +19,7 @@ class BookListsController extends Controller
     {
 
     	$query = $request["query"];
-    	$searchResult = ChcnnParsing::getBookList($query);
+    	$searchResult = ChcnnParsing::getSearchResult($query);
 
     	return view("booklists.create")->with('searchResult', $searchResult);
 
