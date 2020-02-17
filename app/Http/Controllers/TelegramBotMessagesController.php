@@ -31,6 +31,8 @@ class TelegramBotMessagesController extends Controller
 		{
 			sleep(2);
 			$updates = Telegram::getUpdates();
+			//return $updates;
+
 			if (count($updates) > 0)
 			{
 				foreach($updates as $update)

@@ -28,13 +28,7 @@ class TelegramBookDataMessage
 
 	public static function showBookCard($chatId, BookCard $bookCard)
 	{
-		$message = "";
-		$message .= "_" . $bookCard->author[0] . "_ $bookCard->code\n";
-		$message .= "*$bookCard->title*\n";
-		$message .= "📕$bookCard->coverFormat\n";
-		$message .= "📃" . $bookCard->countPages . " с.\n";
-		$message .= "Цена в интернет магазине: " . $bookCard->internetPrice . "р.\n";
-		$message .= "Цена в локальном магазине: " . $bookCard->localPrice . "р.\n";
+		$message = self::createBookCardText($bookCard);
 
 		$keyboard[] = [['text' => 'Наличие', 'callback_data' => 'storesListInStock,' . $bookCard->code],['text' => 'Открыть на сайте', 'url' => ChcnnParsing::$bookcard_url . "$bookCard->code"]];
 		
@@ -109,13 +103,7 @@ class TelegramBookDataMessage
 		$bookCard = ChcnnParsing::getBookCard($code);
 		$storesList = ChcnnParsing::getStoresListInStock($code);
 
-		$message = "";
-		$message .= "_" . $bookCard->author[0] . "_ $bookCard->code\n";
-		$message .= "*$bookCard->title*\n";
-		$message .= "📕$bookCard->coverFormat\n";
-		$message .= "📃" . $bookCard->countPages . " с.\n";
-		$message .= "Цена в интернет магазине: " . $bookCard->internetPrice . "р.\n";
-		$message .= "Цена в локальном магазине: " . $bookCard->localPrice . "р.\n";
+		$message = self::createBookCardText($bookCard);
 
 		$message .= "\n*Магазины*\n";
 
@@ -153,4 +141,18 @@ class TelegramBookDataMessage
 		]);
 
 	}
+
+	private static function createBookCardText(BookCard $bookCard)
+	{
+		$message = "";
+		$message .= "_" . $bookCard->author . "_ $bookCard->code\n";
+		$message .= "*$bookCard->title*\n";
+		$message .= "📕$bookCard->coverFormat\n";
+		$message .= "📃" . $bookCard->getCountPages() . "\n";
+		$message .= "Цена в интернет магазине: " . $bookCard->getInternetPrice() . "\n";
+		$message .= "Цена в локальном магазине: " . $bookCard->getLocalPrice() . "\n";
+
+		return $message;
+	}
+
 }

@@ -5,14 +5,15 @@ class BookCard
 {
 	public $title;
 	public $author;
-	public $price;
+	public $localPrice;
+	public $internetPrice;
 	public $coverFormat;
 	public $code;
 	public $countPages;
 
 	public function __construct(
 			string 	$title = 'н/д',
-			array 	$author = ['н/д'],
+			string 	$author = 'н/д',
 			string 	$internetPrice = 'н/д',
 			string	$localPrice = 'н/д',
 			string 	$code = 'н/д',
@@ -27,6 +28,41 @@ class BookCard
 		$this->code = $code;
 		$this->coverFormat = $coverFormat;
 		$this->countPages = $countPages;
+
+	}
+
+	public function getLocalPrice()
+	{
+		if($this->localPrice == 'н/д')
+		{
+			return $this->localPrice;
+		}else{
+			return $this->localPrice . 'р.';
+		}
+
+	}
+
+	public function getInternetPrice()
+	{
+		if($this->internetPrice == 'н/д')
+		{
+			return $this->internetPrice;
+		}else{
+			return $this->internetPrice . 'р.';
+		}
+
+	}
+
+
+	public function getCountPages()
+	{
+		if($this->countPages == 'н/д')
+		{
+			return $this->countPages;
+		}else{
+			return $this->countPages . 'с.';
+		}
+
 
 	}
 

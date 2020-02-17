@@ -127,29 +127,33 @@ class ChcnnParsing
 		$coverFormat = 'н/д';
 
 		$requestURL = self::$bookcard_url . $bookCode . '/';
-
+	//	$requestURL = __DIR__ . "/../../tests/SearchPageExample/BookCardWitcher.html";
 		$doc = new \DOMDocument();
 
 		libxml_use_internal_errors(true);
 		$doc->loadHTMLFile($requestURL);
 		libxml_use_internal_errors(false);
+
+		$filters = [
+			'author' => 'a.author',
+			'title' => '.product_text h1',
+			'internetPrice' => '.price strong',
+			'localPrice' => '.rozn .price strong',
+		];
+
+		$bookCard = new BookCard();
+
 		try{
 			$str = $doc->saveHTML();
 			$crawler = new Crawler($str);
-			$title = $crawler->filter('.product_text h1')->text();
-			if($crawler->filter('a.author')) 
-				{
-					$author[0] = $crawler->filter('a.author')->text();
-				}
-			$internetPrice = $crawler->filter('.price strong ')->text();
-			if($crawler->filter(".rozn .price strong"))
-			{
-				$localPrice = $crawler->filter(".rozn .price strong")->text();
-			}else{
-				$localPrice = "н/д";
-			}
 
-			$code =	$crawler->filter('.product_text table tr')->first()->filter('td')->last()->text();
+			foreach ($filters as $property => $filter) {
+
+				if(count($crawler->filter($filter))>0)
+				{
+					$bookCard->$property = $crawler->filter($filter)->text(); 
+				}
+			}
 
 			$productInfoTable = $crawler->filter('.product_text table tr td');
 			$countRows = count($productInfoTable);
@@ -157,12 +161,15 @@ class ChcnnParsing
 			for($i = 0; $i < $countRows; $i++)
 			{
 				switch ($productInfoTable->eq($i)->text()) {
+					case 'Код товара';
+						$bookCard->code = $productInfoTable->eq($i+1)->text();
+						break;
 					case 'Кол-во страниц':
 						# code...
-						$pages = $productInfoTable->eq($i+1)->text();
+						$bookCard->pages = $productInfoTable->eq($i+1)->text();
 						break;
 					case 'Оформление':
-						$coverFormat = $productInfoTable->eq($i+1)->text();
+						$bookCard->coverFormat = $productInfoTable->eq($i+1)->text();
 					default:
 						# code...
 						break;
@@ -176,7 +183,7 @@ class ChcnnParsing
 			return new BookCard();
 
 		}
-
+/*
 		$bookCard = new BookCard($title, 
 								$author, 
 								$internetPrice,
@@ -184,6 +191,7 @@ class ChcnnParsing
 								$code, 
 								$coverFormat, 
 								$pages);
+*/
 		return $bookCard;
 
 	}
