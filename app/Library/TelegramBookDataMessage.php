@@ -51,7 +51,7 @@ class TelegramBookDataMessage
 
 		$keyboard = [];
 
-		$i = 1;
+		$i = (($searchResult->currentPage - 1) * 24) + (($searchResult->currentPart - 1) * 6) + 1;
 		foreach($searchResult->bookList as $book)
 			{
 				$keyboard[][] = [	'text' => "$i. " . $book['title'], 
@@ -71,20 +71,23 @@ class TelegramBookDataMessage
 		$keyboard[] = $buttonPages;
 		*/
 
-		$navButtons = [
-					['text' => '*', 'callback_data' => 'empty'],
-					['text' => '*', 'callback_data' => 'empty']
-		];
+		$navButtons = [];
 
+		for($i = 1; $i <= 5; $i++)
+		{
+			$navButtons[] = ['text' => "\xE2\x9A\xAA", 'callback_data' => 'empty'];
+		}
+
+		$navButtons[2]["text"] = "\xE2\x9C\x8C";
 
 		if (($searchResult->totalPages > $searchResult->currentPage)||($searchResult->totalPages > $searchResult->currentPage))
 			{
-				$navButtons[1] = ['text' => '>', 'callback_data' => 'searchResult,' . ($searchResult->currentPage . "," . ($searchResult->currentPart + 1))];
+				$navButtons[3] = ['text' => "\xE2\x96\xB6", 'callback_data' => 'searchResult,' . ($searchResult->currentPage . "," . ($searchResult->currentPart + 1))];
 			}
 
 		if (($searchResult->currentPage > 1)||($searchResult->currentPart > 1))
 			{
-				$navButtons[0] = ['text' => '<', 'callback_data' => 'searchResult,' . $searchResult->currentPage . "," . ($searchResult->currentPart - 1)];
+				$navButtons[1] = ['text' => "\xE2\x97\x80", 'callback_data' => 'searchResult,' . $searchResult->currentPage . "," . ($searchResult->currentPart - 1)];
 			}
 
 		$keyboard[] = $navButtons;
@@ -110,17 +113,17 @@ class TelegramBookDataMessage
 		date_default_timezone_set('Europe/Samara');
 		$date = date('m/d/Y H:i:s', time());
 
-		$message .= "Состояние на " . $date;
-		$message .= "\n";
+		$message .= "Состояние на " . $date . " \n";
+		
 
-		if(count($storesList) >0)
+		if(count($storesList) > 0)
 		{
 			foreach($storesList as $store)
 			{
 				$message .= $store["title"] . "\n";
 				$message .= $store["phone"] . "\n";
 			}
-				$message .= "_Важно уточнить фактическое наличие звонком_";
+				$message .= "\n_Важно уточнить фактическое наличие звонком_";
 		}else{
 			$message .= "Не числится в наличии";
 		} 
@@ -145,7 +148,7 @@ class TelegramBookDataMessage
 	private static function createBookCardText(BookCard $bookCard)
 	{
 		$message = "";
-		$message .= "_" . $bookCard->author . "_ $bookCard->code\n";
+		$message .= "_" . $bookCard->author . "_, код товара: $bookCard->code\n";
 		$message .= "*$bookCard->title*\n";
 		$message .= "📕$bookCard->coverFormat\n";
 		$message .= "📃" . $bookCard->getCountPages() . "\n";
