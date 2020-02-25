@@ -50,6 +50,13 @@ class TelegramBookDataMessage
 	{
 
 		$keyboard = [];
+		$keyboard[][] = ["text" => "Source: " . $searchResult->source, "callback_data" => "empty"];
+
+		if(session('searchResult'))
+			{
+			$cache = session('searchResult');
+			$keyboard[][] = ["text" => "Cached query: " . $cache->query, "callback_data" => "empty"];				
+			}
 
 		$i = (($searchResult->currentPage - 1) * 24) + (($searchResult->currentPart - 1) * 6) + 1;
 		foreach($searchResult->bookList as $book)

@@ -9,13 +9,15 @@ class SearchResult
 	public $currentPart;
 	public $totalParts;
 	public $query;
+	public $source;
 
 	public function __construct(Array $bookList, 
 							int $currentPage, 
 							int $totalPages, 
 							int $currentPart, 
 							int $totalParts, 
-							string $query)
+							string $query,
+							string $source = "site")
 	{
 
 		$this->bookList = $bookList;
@@ -24,5 +26,6 @@ class SearchResult
 		$this->currentPart = $currentPart;
 		$this->totalParts = $totalParts;
 		$this->query = $query;
+		$this->source = $source;
 	}
 }

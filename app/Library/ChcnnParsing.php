@@ -30,91 +30,138 @@ class ChcnnParsing
 
 		}
 
-		//Рассчитыаем URL для парсинга
+		$partNumberAndStartPosition = [
+					1 => 0,
+					2 => 6,
+					3 => 12,
+					4 => 18
+				];
+		$startPosition = $partNumberAndStartPosition[$currentPart]; 				
+		$finalPosition = $startPosition + self::$partSize - 1; 
 
-		$requestURL = self::$search_url . urlencode($query);
-		if ($currentPage > 1)
-			{
-				$requestURL .= "&p=$currentPage";
-			}
-		//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
-		//Парсим страницу и генерируем массив с книгами
 
-		$doc = new \DOMDocument();
-		libxml_use_internal_errors(true);
-		$doc->loadHTMLFile($requestURL);
-		$str = $doc->saveHTML();
-		libxml_use_internal_errors(false);
-		
-		$crawler = new Crawler($str);
-		$productsArray = $crawler->filter(".products .row .product");
-		$productsCount = count($productsArray);
+		if( session("searchResult") && session("searchResult")->query == $query && session("searchResult")->currentPage == $currentPage )
+		{
+			$searchResult = session("searchResult");
 
-		$bookList = [];
-		if($productsCount > 0)
-			{
-			//Рассчитываем начальную и последнюю позицию в массиве книг для формирования итогового списка
-
-			$partNumberAndStartPosition = [
-						1 => 0,
-						2 => 6,
-						3 => 12,
-						4 => 18
-					];
-			$startPosition = $partNumberAndStartPosition[$currentPart]; 				
-			$finalPosition = $startPosition + self::$partSize - 1; 
-
-			//На  случай если выбранная часть поисковой выдачи меньше стандартного размера, то есть результатов выдачи меньше 
-
-			if($productsCount < $finalPosition)
-			{
-				$finalPosition = $productsCount - 1;
-			}		
-
-			//Парсим список книг
+			$allBookList = $searchResult->bookList;
+			$partBookList = [];
 
 			for($i = $startPosition; $i<=$finalPosition; $i++)
 			{
-
-				if($productsArray->eq($i))
+				if($allBookList[$i])
 				{
-				$book = [];
-				$book["title"] = $productsArray->eq($i)->filter('.title')->text();
-				$link = $productsArray->eq($i)->filter(".title")->attr('href');
-				preg_match('/\d*.$/', $link, $code);
-				$book['code'] = str_replace("/", '', $code[0]); 
-
-				$bookList[] = $book;
+				$partBookList[] = $allBookList[$i]; 
 				}
 			}
-		}
-		//Собираем общую инфморацию о поисковой выдаче
 
-		$totalParts = $productsCount % self::$partSize;
-		$paginatorCount = count($crawler->filter(".paginator .links a")); 
-		if( $paginatorCount > 0)
-		{
+			$searchResult->bookList = $partBookList;
 
-			$totalPages = $crawler->filter(".paginator .links a")->last()->html();
-			if($totalPages == 0)
-			{
-				$totalPages = $crawler->filter(".paginator .links a")->eq($paginatorCount - 2)->html();
-			}
-			
 		}else{
-			$totalPages = 1;
+			//Рассчитыаем URL для парсинга
+
+			$requestURL = self::$search_url . urlencode($query);
+			if ($currentPage > 1)
+				{
+					$requestURL .= "&p=$currentPage";
+				}
+			//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
+			//Парсим страницу и генерируем массив с книгами
+
+			$doc = new \DOMDocument();
+			libxml_use_internal_errors(true);
+			$doc->loadHTMLFile($requestURL);
+			$str = $doc->saveHTML();
+			libxml_use_internal_errors(false);
+			
+			$crawler = new Crawler($str);
+			$productsArray = $crawler->filter(".products .row .product");
+			$productsCount = count($productsArray);
+
+			$partBookList = [];
+			$allBookList = [];
+
+			if($productsCount > 0)
+				{
+				//Рассчитываем начальную и последнюю позицию в массиве книг для формирования итогового списка
+
+
+
+				//На  случай если выбранная часть поисковой выдачи меньше стандартного размера, то есть результатов выдачи меньше 
+
+				if($productsCount < $finalPosition)
+				{
+					$finalPosition = $productsCount - 1;
+				}		
+
+				//Парсим весь список книг
+
+				for($i = 0; $i < $productsCount; $i++)
+				{
+					if($productsArray->eq($i))
+						{
+							$book = [];
+
+							$book["title"] = $productsArray->eq($i)->filter('.title')->text();
+							$link = $productsArray->eq($i)->filter(".title")->attr('href');
+							preg_match('/\d*.$/', $link, $code);
+							$book['code'] = str_replace("/", '', $code[0]); 
+
+							$allBookList[] = $book;
+						}
+
+				}
+
+				//Создаём массив с необходимой частью выдачи 
+
+				for($i = $startPosition; $i<=$finalPosition; $i++)
+				{
+					if($allBookList[$i])
+					{
+					$partBookList[] = $allBookList[$i]; 
+					}
+				}
+			}
+			//Собираем общую инфморацию о поисковой выдаче
+
+			$totalParts = $productsCount % self::$partSize;
+			$paginatorCount = count($crawler->filter(".paginator .links a")); 
+			if( $paginatorCount > 0)
+			{
+
+				$totalPages = $crawler->filter(".paginator .links a")->last()->html();
+				if($totalPages == 0)
+				{
+					$totalPages = $crawler->filter(".paginator .links a")->eq($paginatorCount - 2)->html();
+				}
+				
+			}else{
+				$totalPages = 1;
+			}
+
+			//Формируем ответ
+			
+			$searchResult = new SearchResult(
+											$partBookList,
+											(int)$currentPage,
+											(int)$totalPages,
+											(int)$currentPart,
+											(int)$totalParts,
+											$query
+										);
+			$cachedSearchResult = new SearchResult(
+									$allBookList,
+									$currentPage,
+									$totalPages,
+									$currentPart,
+									$totalParts,
+									$query,
+									"cache"
+									);
+
+			session(['sessionResult' => $cachedSearchResult]);
 		}
 
-		//Формируем ответ
-		
-		$searchResult = new SearchResult(
-										$bookList,
-										(int)$currentPage,
-										(int)$totalPages,
-										(int)$currentPart,
-										(int)$totalParts,
-										$query
-									);
 		return $searchResult;
 
 	}
