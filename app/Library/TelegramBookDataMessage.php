@@ -55,8 +55,11 @@ class TelegramBookDataMessage
 		if(session('searchResult'))
 			{
 			$cache = session('searchResult');
-			$keyboard[][] = ["text" => "Cached data: " . $cache->query . ", " . $cache->currentPage, "callback_data" => "empty"];				
+			$keyboard[][] = ["text" => "Cached data: " . $cache->query . ", " . $cache->currentPage . ", " . $cache->currentPart . ", " . $cache->totalParts . ", " . $cache->totalPages  . ", " . count($cache->bookList), "callback_data" => "empty"];				
 			}
+
+		$keyboard[][] = ["text" => "Current data: " . $searchResult->query . ", " . $searchResult->currentPage . ", " . $searchResult->currentPart . ", " . $searchResult->totalParts . ", " . $searchResult->totalPages  . ", " . count($searchResult->bookList), "callback_data" => "empty"];				
+			
 
 		$i = (($searchResult->currentPage - 1) * 24) + (($searchResult->currentPart - 1) * 6) + 1;
 		foreach($searchResult->bookList as $book)
@@ -85,13 +88,15 @@ class TelegramBookDataMessage
 			$navButtons[] = ['text' => "\xE2\x9A\xAA", 'callback_data' => 'empty'];
 		}
 
-		$navButtons[2]["text"] = "\xE2\x9C\x8C";
+		$navButtons[2]["text"] = "\xE2\x9C\x8C"; //знак v пальцами
 
-		if (($searchResult->totalPages > $searchResult->currentPage)||($searchResult->totalParts > $searchResult->currentParts))
+		//кнопка вперёд
+		if (($searchResult->totalPages > $searchResult->currentPage)||($searchResult->totalParts > $searchResult->currentPart))
 			{
 				$navButtons[3] = ['text' => "\xE2\x96\xB6", 'callback_data' => 'searchResult,' . ($searchResult->currentPage . "," . ($searchResult->currentPart + 1))];
 			}
 
+		//кнопка назад
 		if (($searchResult->currentPage > 1)||($searchResult->currentPart > 1))
 			{
 				$navButtons[1] = ['text' => "\xE2\x97\x80", 'callback_data' => 'searchResult,' . $searchResult->currentPage . "," . ($searchResult->currentPart - 1)];

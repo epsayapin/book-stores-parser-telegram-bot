@@ -45,11 +45,12 @@ class ChcnnParsing
 		if( (session("searchResult")) 
 			&& (session("searchResult")->query == $query )
 			&& (session("searchResult")->currentPage == $currentPage) 
-			&& (count(session('searchResult')->bookList) > 0))
+			&& (count(session('searchResult')->bookList) > 0)
+			)
 		{
-			$searchResult = session("searchResult");
+			$cachedSearchResult = session("searchResult");
 
-			$allBookList = $searchResult->bookList;
+			$allBookList = $cachedSearchResult->bookList;
 			$partBookList = [];
 
 			for($i = $startPosition; $i<=$finalPosition; $i++)
@@ -60,9 +61,15 @@ class ChcnnParsing
 				}
 			}
 			
-			$searchResult->currentPart = $currentPart;
-			$searchResult->currentPage = $currentPage;
-			$searchResult->bookList = $partBookList;
+			$searchResult = new SearchResult(
+								$partBookList,
+								$currentPage,
+								$cachedSearchResult->totalPages,
+								$currentPart,
+								$cachedSearchResult->totalParts,
+								$cachedSearchResult->query,
+								"cache"
+			);
 
 		}else{
 			//Рассчитыаем URL для парсинга
@@ -82,7 +89,7 @@ class ChcnnParsing
 			libxml_use_internal_errors(false);
 			
 			$crawler = new Crawler($str);
-			$productsArray = $crawler->filter(".products .row .product");
+			$productsArray = $crawler->filter(".row .product");
 			$productsCount = count($productsArray);
 
 			$partBookList = [];
@@ -120,7 +127,7 @@ class ChcnnParsing
 
 				for($i = $startPosition; $i<=$finalPosition; $i++)
 				{
-					if($allBookList[$i])
+					if(isset($allBookList[$i]))
 					{
 					$partBookList[] = $allBookList[$i]; 
 					}
@@ -155,10 +162,10 @@ class ChcnnParsing
 										);
 			$cachedSearchResult = new SearchResult(
 									$allBookList,
-									$currentPage,
-									$totalPages,
-									$currentPart,
-									$totalParts,
+									(int)$currentPage,
+									(int)$totalPages,
+									(int)$currentPart,
+									(int)$totalParts,
 									$query,
 									"cache"
 									);

@@ -123,7 +123,7 @@ class TelegramBotMessagesController extends Controller
 				TelegramBookDataMessage::addStoresListInStock($chatId, $messageId, $code);
 				break;
 			default:
-				# code...
+			Telegram::answerCallbackQuery();
 				break;
 		}
 
