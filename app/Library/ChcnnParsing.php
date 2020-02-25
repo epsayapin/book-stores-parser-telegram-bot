@@ -30,6 +30,8 @@ class ChcnnParsing
 
 		}
 
+		//Рассчитываем начальную и последнюю позицию в массиве книг для формирования итогового списка
+
 		$partNumberAndStartPosition = [
 					1 => 0,
 					2 => 6,
@@ -40,7 +42,10 @@ class ChcnnParsing
 		$finalPosition = $startPosition + self::$partSize - 1; 
 
 
-		if( session("searchResult") && session("searchResult")->query == $query && session("searchResult")->currentPage == $currentPage )
+		if( (session("searchResult")) 
+			&& (session("searchResult")->query == $query )
+			&& (session("searchResult")->currentPage == $currentPage) 
+			&& (count(session('searchResult')->bookList) > 0))
 		{
 			$searchResult = session("searchResult");
 
@@ -49,12 +54,14 @@ class ChcnnParsing
 
 			for($i = $startPosition; $i<=$finalPosition; $i++)
 			{
-				if($allBookList[$i])
+				if(isset($allBookList[$i]))
 				{
-				$partBookList[] = $allBookList[$i]; 
+					$partBookList[] = $allBookList[$i]; 
 				}
 			}
-
+			
+			$searchResult->currentPart = $currentPart;
+			$searchResult->currentPage = $currentPage;
 			$searchResult->bookList = $partBookList;
 
 		}else{
@@ -83,9 +90,6 @@ class ChcnnParsing
 
 			if($productsCount > 0)
 				{
-				//Рассчитываем начальную и последнюю позицию в массиве книг для формирования итогового списка
-
-
 
 				//На  случай если выбранная часть поисковой выдачи меньше стандартного размера, то есть результатов выдачи меньше 
 
@@ -159,7 +163,7 @@ class ChcnnParsing
 									"cache"
 									);
 
-			session(['sessionResult' => $cachedSearchResult]);
+			session(['searchResult' => $cachedSearchResult]);
 		}
 
 		return $searchResult;

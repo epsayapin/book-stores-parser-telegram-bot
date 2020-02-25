@@ -55,7 +55,7 @@ class TelegramBookDataMessage
 		if(session('searchResult'))
 			{
 			$cache = session('searchResult');
-			$keyboard[][] = ["text" => "Cached query: " . $cache->query, "callback_data" => "empty"];				
+			$keyboard[][] = ["text" => "Cached data: " . $cache->query . ", " . $cache->currentPage, "callback_data" => "empty"];				
 			}
 
 		$i = (($searchResult->currentPage - 1) * 24) + (($searchResult->currentPart - 1) * 6) + 1;
@@ -87,7 +87,7 @@ class TelegramBookDataMessage
 
 		$navButtons[2]["text"] = "\xE2\x9C\x8C";
 
-		if (($searchResult->totalPages > $searchResult->currentPage)||($searchResult->totalPages > $searchResult->currentPage))
+		if (($searchResult->totalPages > $searchResult->currentPage)||($searchResult->totalParts > $searchResult->currentParts))
 			{
 				$navButtons[3] = ['text' => "\xE2\x96\xB6", 'callback_data' => 'searchResult,' . ($searchResult->currentPage . "," . ($searchResult->currentPart + 1))];
 			}
