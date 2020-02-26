@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use App\Http\Controllers\TelegramBotMessagesController as Controller;
 
 class TelegramBotMessagesController extends TestCase
 {
@@ -18,10 +19,12 @@ class TelegramBotMessagesController extends TestCase
 
  	public function testStartCommandShouldReturnTextMessage()
  	{
+
+
  		$textResponse = "Hello World";
  		$chatId = "117157138";
  		
- 		$startMessage = {
+ 		$startMessage = [
  			"message" => [
  				"chat" => [
  					"id" => $chatId
@@ -37,7 +40,14 @@ class TelegramBotMessagesController extends TestCase
 
  			]
 
- 		};
+ 		];
+
+ 	$controller = new Controller();
+
+ 	$response = $controller->handle($startMessage);
+
+ 	echo $response["message"];
+ 	$this->assertTrue(isset($response["message"]));
 
  	}
 }

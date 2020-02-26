@@ -72,11 +72,14 @@ class TelegramBotMessagesController extends Controller
 			self::callback($message);
 		}
 
-		if (isset($message["message"]["text"]) && ! ($message["message"]["entities"][0]['type'] == "bot_command"))
+		if (isset($message["message"]["text"]) && !(isset($message["message"]["entities"][0]['type'])))
 		{
 			self::message($message);
 		}
 
+		$update = Telegram::commandsHandler(false, ['timeout' => 30]);
+
+/*
 		if ($message["message"]["entities"][0]['type'] == "bot_command")
 		{
 			Telegram::sendMessage([
@@ -84,8 +87,9 @@ class TelegramBotMessagesController extends Controller
 							"chat_id" => $message['message']['chat']['id']
 							]);
 			Telegram::triggerCommand($message);
-		}
 
+		}
+*/
 	}
 
 	public function message($message)
