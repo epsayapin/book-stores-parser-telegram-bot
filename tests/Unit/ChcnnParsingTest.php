@@ -34,10 +34,8 @@ class ChcnnParsingTest extends TestCase
     public function testGetSearchResultMustReturnSearchResult()
     {
 
-        $searchQuerys = ['Ведьмак', 'Сорокин', 'Гарри Поттер',
-                    'Пушкин', 'Достоевский', 'Иванов', 'Пелевин', 'Воннегут'];
-
-        $searchQuery = $searchQuerys[rand(0, count($searchQuerys) - 1)];
+        
+        $searchQuery = self::getSearchQuery();
         echo "\nUsed query - " . $searchQuery . "\n";
 
         $searchResult =ChcnnParsing::getSearchResult($searchQuery);
@@ -58,29 +56,17 @@ class ChcnnParsingTest extends TestCase
 
     }
 
-    public function testGetBookCardShouldReturnBookCard()
+    public function xtestGetBookCardShouldReturnBookCard()
     {
 
-        $bookCodes = [
-                    //'2617830',
-                    '4052565',
-                    '4052340',
-                    '4052821',
-                    '4000529',
-                    '3978197',
-                    '4000527',
-                    '2113226',
-                    '3791720',
-                    //'3869778'
-            ];
-
-        $code = $bookCodes[rand(0, count($bookCodes) - 1)];
+        //$code = $bookCodes[rand(0, count($bookCodes) - 1)];
+        $code = self::getCode();
         echo "\nUsed code - " . $code . "\n";
 
         $bookcard = ChcnnParsing::getBookCard($code);
 
         $propertyListString = ['author', 'title', 'code', 'coverFormat', 'countPages' ];
-        $propertyListInt = ['price' ];
+        $propertyListInt = ['localPrice', "internetPrice"];
         foreach($propertyListString as $property)
         {
             $this->assertTrue(isset($bookcard->$property), "\n -- $property don't exists");
@@ -92,18 +78,14 @@ class ChcnnParsingTest extends TestCase
 
         foreach($propertyListInt as $property)
         {
-            $this->assertTrue(isset($bookcard->$property));
+            $this->assertTrue(isset($bookcard->$property), "\n -- $property not set");
             $this->assertNotEquals(0, $bookcard->$property, "\n -- $property equal zero");
 
         }
-
-
-
-        $this->assertGreaterThan(0, count($bookcard->author));
     
     }
 
-    public function testSinglePageResultsShouldHandleCorrect()
+    public function xtestSinglePageResultsShouldHandleCorrect()
     {
         $query = 'Cobain';
         $searchResult = ChcnnParsing::getSearchResult($query);
@@ -112,7 +94,53 @@ class ChcnnParsingTest extends TestCase
 
     public function testGetStoresListInStockShouldReturnArray()
     {
-        
+
+      $storesInStock = ChcnnParsing::getStoresListInStock(self::getCode());
+
+      $this->assertTrue(is_array($storesInStock));
+      $this->assertGreaterThan(0, count($storesInStock));
+
+    }
+
+    public function getCode()
+    {
+        $bookCodes = [
+            //'2617830',
+            '4052565',
+            '4052340',
+            '4052821',
+            '4000529',
+            '3978197',
+            '4000527',
+            '2113226',
+            '3791720',
+            //'3869778'
+        ];
+
+        $count = count($bookCodes);
+        return $bookCodes[rand(0, $count - 1)];
+    }
+
+    public function getSearchQuery()
+    {
+        $searchQuerys = [
+                        'Ведьмак', 
+                        'Сорокин', 
+                        'Гарри Поттер',
+                        'Пушкин', 
+                        'Достоевский', 
+                        'Иванов', 
+                        'Пелевин', 
+                        'Воннегут',
+                        'Стивен Кинг',
+                        'Искусство',
+                        'Психология отношений',
+                        'Зигмунд Фрейд',
+                        'Капитанская дочка'
+                    ];
+        $count = count($searchQuerys);
+        return $searchQuerys[rand(0, $count - 1)];
+    
     }
 
 }

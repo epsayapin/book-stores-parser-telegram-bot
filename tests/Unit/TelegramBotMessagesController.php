@@ -15,4 +15,29 @@ class TelegramBotMessagesController extends TestCase
     {
         $this->assertTrue(true);
     }
+
+ 	public function testStartCommandShouldReturnTextMessage()
+ 	{
+ 		$textResponse = "Hello World";
+ 		$chatId = "117157138";
+ 		
+ 		$startMessage = {
+ 			"message" => [
+ 				"chat" => [
+ 					"id" => $chatId
+ 				],
+
+ 				"text" => "/start",
+
+ 				"entity" => [
+ 					0 => [
+ 						"type" => "bot_command"
+ 					]
+ 				]
+
+ 			]
+
+ 		};
+
+ 	}
 }
