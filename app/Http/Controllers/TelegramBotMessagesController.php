@@ -24,15 +24,15 @@ class TelegramBotMessagesController extends Controller
 
 		$status = $entity->status;
 		$attemps = 1;
-		$attempsLimit = 3;
+		$attempsLimit = 5;
 		$updates = Telegram::getUpdates();
 
 		while ($status === "PENDING" && $attemps <= $attempsLimit)
 		{
 			sleep(2);
 			$updates = Telegram::getUpdates();
-			$update = Telegram::commandsHandler(true);
 			//return $updates;
+			$update = Telegram::commandsHandler(true);
 
 			if (count($updates) > 0)
 			{
@@ -76,8 +76,6 @@ class TelegramBotMessagesController extends Controller
 		{
 			self::message($message);
 		}
-
-		$update = Telegram::commandsHandler(false, ['timeout' => 30]);
 
 /*
 		if ($message["message"]["entities"][0]['type'] == "bot_command")

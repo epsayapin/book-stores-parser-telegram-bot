@@ -115,7 +115,12 @@ class TelegramBookDataMessage
 	{
 		//$storesList = ChcnnParsing::getStoresListInStock($code);
 		
+		if(session($code))
+		{
+			$bookCard = session($code);
+		}else{
 		$bookCard = ChcnnParsing::getBookCard($code);
+		}
 		$storesList = ChcnnParsing::getStoresListInStock($code);
 
 		$message = self::createBookCardText($bookCard);
@@ -160,6 +165,7 @@ class TelegramBookDataMessage
 	private static function createBookCardText(BookCard $bookCard)
 	{
 		$message = "";
+		//$message .= "Source: " . $bookCard->source . "\n";
 		$message .= "_" . $bookCard->author . "_, код товара: $bookCard->code\n";
 		$message .= "*$bookCard->title*\n";
 		$message .= "📕$bookCard->coverFormat\n";

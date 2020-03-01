@@ -10,6 +10,7 @@ class BookCard
 	public $coverFormat;
 	public $code;
 	public $countPages;
+	public $source;
 
 	public function __construct(
 			string 	$title = 'н/д',
@@ -18,7 +19,8 @@ class BookCard
 			string	$localPrice = 'н/д',
 			string 	$code = 'н/д',
 			string 	$coverFormat = 'н/д',
-			string 	$countPages = 'н/д' 
+			string 	$countPages = 'н/д', 
+			string 	$source = 'site'
 	)
 	{
 		$this->title = $title;
@@ -28,7 +30,7 @@ class BookCard
 		$this->code = $code;
 		$this->coverFormat = $coverFormat;
 		$this->countPages = $countPages;
-
+		$this->source = $source;
 	}
 
 	public function getLocalPrice()

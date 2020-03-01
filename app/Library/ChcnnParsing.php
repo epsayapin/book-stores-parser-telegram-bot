@@ -224,7 +224,7 @@ class ChcnnParsing
 						break;
 					case 'Кол-во страниц':
 						# code...
-						$bookCard->pages = $productInfoTable->eq($i+1)->text();
+						$bookCard->countPages = $productInfoTable->eq($i+1)->text();
 						break;
 					case 'Оформление':
 						$bookCard->coverFormat = $productInfoTable->eq($i+1)->text();
@@ -241,15 +241,11 @@ class ChcnnParsing
 			return new BookCard();
 
 		}
-/*
-		$bookCard = new BookCard($title, 
-								$author, 
-								$internetPrice,
-								$localPrice,
-								$code, 
-								$coverFormat, 
-								$pages);
-*/
+
+		$cachedBookCard = clone $bookCard;
+		$cachedBookCard->source = "cache";
+		session([$bookCode => $cachedBookCard]);
+
 		return $bookCard;
 
 	}
