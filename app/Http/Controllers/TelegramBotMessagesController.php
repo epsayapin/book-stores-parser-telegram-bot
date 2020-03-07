@@ -63,6 +63,21 @@ class TelegramBotMessagesController extends Controller
 		return $updates;
 	}
 
+	public function webhook()
+	{
+		    $updates = Telegram::getWebhookUpdates();
+			foreach($updates as $update)
+				{
+					if(Update::where('update_id',$update["update_id"])->count() == 0) 
+					{
+					self::handle($update);
+					Update::create(["update_id" => $update["update_id"]]);
+					}	
+				}
+				
+    		return 'ok';
+	}
+
 	public function handle($message)
 	{
 		//$message = session()->get('message');

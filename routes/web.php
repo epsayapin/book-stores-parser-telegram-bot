@@ -31,3 +31,5 @@ Route::get('/message', "TelegramBotMessagesController@message")->name('message')
 Route::get('/callback', "TelegramBotMessagesController@callback")->name('callback');
 
 Route::get('/storeslist', "ChcnnParsingController@getStoresListInStock");
+
+Rote::post('/webhook', "TelegramBotMessagesController@webhook")->name('webhook');
