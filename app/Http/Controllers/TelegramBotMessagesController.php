@@ -11,7 +11,7 @@ use App\Library\TelegramBookDataMessage;
 
 use \App\Entity;
 use \App\Update;
-
+use \App\SearchQuery;
 
 class TelegramBotMessagesController extends Controller
 {
@@ -111,6 +111,20 @@ class TelegramBotMessagesController extends Controller
 		//$message = session()->get('message');
 		$chatId = $message['message']['chat']['id'];
 		$query = $message["message"]["text"];	
+
+		$text = $query;
+		$fullname = $message['message']['from']['first_name'] . " " . $message['message']['from']['last_name'];
+		$username = $message['message']['from']['username'];
+		$from_id = $message['message']['from']['id'];
+
+		$searchQuery = new SearchQuery([
+							"text" => $text,
+							"fullname" => $fullname,
+							"username" => $username,
+							"from_id" => $from_id,
+		]);
+		$searchQuery->save();
+
 		session(['query' => $query]);
 		$searchResult = ChcnnParsing::getSearchResult($query);
 		TelegramBookDataMessage::showSearchResult($chatId, $searchResult);
