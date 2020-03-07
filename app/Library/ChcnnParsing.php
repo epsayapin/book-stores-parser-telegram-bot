@@ -6,18 +6,18 @@ use App\Library\SearchResult;
 use App\Library\BookCard;
 class ChcnnParsing
 {
-	public static $search_url = 'https://chaconne.ru/search/?q=';
-	public static $bookcard_url = 'https://chaconne.ru/product/';
-	public static $partsOnPage = 4;
-	public static $partSize = 6;
-	public static $storesInStockUrl = "https://chaconne.ru/block/nalich.php?id=";
+	const SEARCH_URL = 'https://chaconne.ru/search/?q=';
+	const BOOKCARD_URL = 'https://chaconne.ru/product/';
+	const PARTS_ON_PAGE = 4;
+	const PART_SIZE = 6;
+	const STORES_IN_STOCK = "https://chaconne.ru/block/nalich.php?id=";
 
 	public static function getSearchResult(String $query, int $currentPage = 1, int $currentPart = 1): SearchResult
 	{
 
 		//На основе запрошенной части выдачи $currentPart уточнняем нужно ли перейти на следующую страницу поисковой выдачи  или же вернуться назад 
 
-		if($currentPart > self::$partsOnPage)
+		if($currentPart > self::PARTS_ON_PAGE)
 		{
 			$currentPart = 1;
 			$currentPage += 1;
@@ -25,7 +25,7 @@ class ChcnnParsing
 
 		if($currentPart == 0)
 		{
-			$currentPart = self::$partsOnPage;
+			$currentPart = self::PARTS_ON_PAGE;
 			$currentPage -= 1;
 
 		}
@@ -39,7 +39,7 @@ class ChcnnParsing
 					4 => 18
 				];
 		$startPosition = $partNumberAndStartPosition[$currentPart]; 				
-		$finalPosition = $startPosition + self::$partSize - 1; 
+		$finalPosition = $startPosition + self::PART_SIZE - 1; 
 
 
 		if( (session("searchResult")) 
@@ -74,7 +74,7 @@ class ChcnnParsing
 		}else{
 			//Рассчитыаем URL для парсинга
 
-			$requestURL = self::$search_url . urlencode($query);
+			$requestURL = self::SEARCH_URL . urlencode($query);
 			if ($currentPage > 1)
 				{
 					$requestURL .= "&p=$currentPage";
@@ -135,7 +135,7 @@ class ChcnnParsing
 			}
 			//Собираем общую инфморацию о поисковой выдаче
 
-			$totalParts = $productsCount % self::$partSize;
+			$totalParts = $productsCount % self::PART_SIZE;
 			$paginatorCount = count($crawler->filter(".paginator .links a")); 
 			if( $paginatorCount > 0)
 			{
@@ -184,7 +184,7 @@ class ChcnnParsing
 		$pages = 'н/д';
 		$coverFormat = 'н/д';
 
-		$requestURL = self::$bookcard_url . $bookCode . '/';
+		$requestURL = self::BOOKCARD_URL . $bookCode . '/';
 	//	$requestURL = __DIR__ . "/../../tests/SearchPageExample/BookCardWitcher.html";
 		$doc = new \DOMDocument();
 
@@ -255,7 +255,7 @@ class ChcnnParsing
 		//Если в наличии - data-nalich="1" иначе - 3
 
 
-		$storesInStockUrl = self::$storesInStockUrl . $code;
+		$storesInStockUrl = self::STORES_IN_STOCK . $code;
 		
 		//$code = "4052579";
 		//$storesInStockUrl = __DIR__ . "/../../tests/SearchPageExample/storesInStock.html";

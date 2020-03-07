@@ -30,7 +30,7 @@ class TelegramBookDataMessage
 	{
 		$message = self::createBookCardText($bookCard);
 
-		$keyboard[] = [['text' => 'Наличие', 'callback_data' => 'storesListInStock,' . $bookCard->code],['text' => 'Открыть на сайте', 'url' => ChcnnParsing::$bookcard_url . "$bookCard->code"]];
+		$keyboard[] = [['text' => 'Наличие', 'callback_data' => 'storesListInStock,' . $bookCard->code],['text' => 'Открыть на сайте', 'url' => ChcnnParsing::BOOKCARD_URL . "$bookCard->code"]];
 		
 		$replyMarkup = Telegram::replyKeyboardMarkup([
 			'inline_keyboard' =>  $keyboard
@@ -146,7 +146,7 @@ class TelegramBookDataMessage
 		} 
 
 
-		$keyboard[] = [['text' => 'Наличие', 'callback_data' => 'storesListInStock,' . $bookCard->code], ['text' => 'Открыть на сайте', 'url' => ChcnnParsing::$bookcard_url . "$bookCard->code"]];
+		$keyboard[] = [['text' => 'Наличие', 'callback_data' => 'storesListInStock,' . $bookCard->code], ['text' => 'Открыть на сайте', 'url' => ChcnnParsing::BOOKCARD_URL . "$bookCard->code"]];
 
 		$replyMarkup = Telegram::replyKeyboardMarkup([
 			'inline_keyboard' =>  $keyboard
