@@ -82,13 +82,8 @@ class ChcnnParsing
 			//$requestURL = __DIR__ . "/../../tests/SearchPageExample/Example.html";
 			//Парсим страницу и генерируем массив с книгами
 
-			$doc = new \DOMDocument();
-			libxml_use_internal_errors(true);
-			$doc->loadHTMLFile($requestURL);
-			$str = $doc->saveHTML();
-			libxml_use_internal_errors(false);
-			
-			$crawler = new Crawler($str);
+			$crawler = self::createCrawlerByUrl($requestURL);
+
 			$productsArray = $crawler->filter(".row .product");
 			$productsCount = count($productsArray);
 
@@ -186,11 +181,6 @@ class ChcnnParsing
 
 		$requestURL = self::BOOKCARD_URL . $bookCode . '/';
 	//	$requestURL = __DIR__ . "/../../tests/SearchPageExample/BookCardWitcher.html";
-		$doc = new \DOMDocument();
-
-		libxml_use_internal_errors(true);
-		$doc->loadHTMLFile($requestURL);
-		libxml_use_internal_errors(false);
 
 		$filters = [
 			'author' => 'a.author',
@@ -202,8 +192,8 @@ class ChcnnParsing
 		$bookCard = new BookCard();
 
 		try{
-			$str = $doc->saveHTML();
-			$crawler = new Crawler($str);
+			
+			$crawler = self::createCrawlerByUrl($requestURL);
 
 			foreach ($filters as $property => $filter) {
 
@@ -285,6 +275,18 @@ class ChcnnParsing
 		}
 
 		return $storesList;
+	}
+
+	private static function createCrawlerByUrl($url): Crawler
+	{
+			$doc = new \DOMDocument();
+			libxml_use_internal_errors(true);
+			$doc->loadHTMLFile($url);
+			$str = $doc->saveHTML();
+			libxml_use_internal_errors(false);
+			
+			$crawler = new Crawler($str);
+			return $crawler;
 	}
 
 }
