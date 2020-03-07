@@ -32,4 +32,4 @@ Route::get('/callback', "TelegramBotMessagesController@callback")->name('callbac
 
 Route::get('/storeslist', "ChcnnParsingController@getStoresListInStock");
 
-Rote::post('/webhook', "TelegramBotMessagesController@webhook")->name('webhook');
+Route::post('/webhook', "TelegramBotMessagesController@webhook")->name('webhook');
