@@ -16,16 +16,15 @@ class ChaconneParsing implements BookStoreParsingInterface{
 	public static function getSearchResultPage(
 										String $query, 
 										int $pageNumber = 1
-												): SearchResultPage
-	{
+										): SearchResultPage{
 
 		$requestURL = self::SEARCH_URL . urlencode($query);
 
 		$crawler = self::createCrawlerByUrl($requestURL);
 
 		$booksCrawler = $crawler->filter(".products .row .product");
-		
 		$booksCrawlerCount = count($booksCrawler);
+
 		$books = [];
 
 		if($booksCrawlerCount > 0){
@@ -53,7 +52,7 @@ class ChaconneParsing implements BookStoreParsingInterface{
 								(int)$pageNumber,
 							);
 		return $searchResult;
-		}
+	}
 
 	public static function getBookCard($bookCode): BookCard
 	{
@@ -75,7 +74,7 @@ class ChaconneParsing implements BookStoreParsingInterface{
 
 			foreach ($cssSelectors as $bookProperty => $cssSelector) {
 
-				if(count($crawler->filter($filter))>0)
+				if(count($crawler->filter($cssSelector))>0)
 				{
 					$bookCard->$bookProperty = $crawler->filter($cssSelector)->text(); 
 				}

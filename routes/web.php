@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/get-search-result-page', "ChaconneParsingController@getSearchResultPage");
+Route::get('/get-book-card', "ChaconneParsingController@getBookCard");
+
 
 
 Route::get('/booklists', "BookListsController@create");
@@ -31,6 +34,5 @@ Route::get('/message', "TelegramBotMessagesController@message")->name('message')
 Route::get('/callback', "TelegramBotMessagesController@callback")->name('callback');
 
 Route::get('/storeslist', "ChcnnParsingController@getStoresListInStock");
-Route::get('/get-search-result-page', "ChaconneParsingController@getSearchResultPage");
 
 Route::post('/webhook', "TelegramBotMessagesController@webhook")->name('webhook');

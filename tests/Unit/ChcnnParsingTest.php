@@ -32,34 +32,7 @@ class ChcnnParsingTest extends TestCase
     }
 
 
-    public function xtestGetBookCardShouldReturnBookCard()
-    {
 
-        //$code = $bookCodes[rand(0, count($bookCodes) - 1)];
-        $code = self::getCode();
-        echo "\nUsed code - " . $code . "\n";
-
-        $bookcard = ChcnnParsing::getBookCard($code);
-
-        $propertyListString = ['author', 'title', 'code', 'coverFormat', 'countPages' ];
-        $propertyListInt = ['localPrice', "internetPrice"];
-        foreach($propertyListString as $property)
-        {
-            $this->assertTrue(isset($bookcard->$property), "\n -- $property don't exists");
-            if (!($property == 'author'))
-            {
-            $this->assertNotEquals("", $bookcard->$property[0], "\n -- $property empty");
-            }
-        }
-
-        foreach($propertyListInt as $property)
-        {
-            $this->assertTrue(isset($bookcard->$property), "\n -- $property not set");
-            $this->assertNotEquals(0, $bookcard->$property, "\n -- $property equal zero");
-
-        }
-    
-    }
 
     public function xtestSinglePageResultsShouldHandleCorrect()
     {
