@@ -1,7 +1,7 @@
 <?php
-namespace App\Library;
+namespace App\Library\BookStoreParsing;
 
-class SearchResult
+class SearchResultPage
 {
 	public $bookList;
 	public $currentPage;

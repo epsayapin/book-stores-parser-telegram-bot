@@ -31,30 +31,6 @@ class ChcnnParsingTest extends TestCase
 
     }
 
-    public function testGetSearchResultMustReturnSearchResult()
-    {
-
-        
-        $searchQuery = self::getSearchQuery();
-        echo "\nUsed query - " . $searchQuery . "\n";
-
-        $searchResult =ChcnnParsing::getSearchResult($searchQuery);
-        $bookList = $searchResult->bookList;
-
-        $this->assertTrue(isset($searchResult->bookList));
-        $this->assertTrue(isset($searchResult->currentPage));
-        $this->assertTrue(isset($searchResult->totalPages));
-
-        $this->assertEquals(ChcnnParsing::$partSize, count($searchResult->bookList));
-        $this->assertGreaterThan(0, $searchResult->totalPages);
-
-        foreach($bookList as $book)
-        {
-            $this->assertTrue(isset($book["title"]));
-            $this->assertTrue(isset($book["code"]));
-        }
-
-    }
 
     public function xtestGetBookCardShouldReturnBookCard()
     {
@@ -102,45 +78,6 @@ class ChcnnParsingTest extends TestCase
 
     }
 
-    public function getCode()
-    {
-        $bookCodes = [
-            //'2617830',
-            '4052565',
-            '4052340',
-            '4052821',
-            '4000529',
-            '3978197',
-            '4000527',
-            '2113226',
-            '3791720',
-            //'3869778'
-        ];
 
-        $count = count($bookCodes);
-        return $bookCodes[rand(0, $count - 1)];
-    }
-
-    public function getSearchQuery()
-    {
-        $searchQuerys = [
-                        'Ведьмак', 
-                        'Сорокин', 
-                        'Гарри Поттер',
-                        'Пушкин', 
-                        'Достоевский', 
-                        'Иванов', 
-                        'Пелевин', 
-                        'Воннегут',
-                        'Стивен Кинг',
-                        'Искусство',
-                        'Психология отношений',
-                        'Зигмунд Фрейд',
-                        'Капитанская дочка'
-                    ];
-        $count = count($searchQuerys);
-        return $searchQuerys[rand(0, $count - 1)];
-    
-    }
 
 }

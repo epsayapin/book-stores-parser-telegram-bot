@@ -1,5 +1,5 @@
 <?php
-namespace App\Library;
+namespace App\Library\BookStoreParsing;
 
 class BookCard
 {

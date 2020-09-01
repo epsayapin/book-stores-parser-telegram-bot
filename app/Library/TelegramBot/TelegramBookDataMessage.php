@@ -1,8 +1,8 @@
 <?php
-namespace App\Library;
+namespace App\Library\TelegramBot;
 use Telegram;
-use App\Library\BookCard;
-use App\Library\searchResult;
+use App\Library\BookStoreParsing\BookCard;
+use App\Library\BookStoreParsing\SearchResultPage;
 
 class TelegramBookDataMessage
 {
@@ -46,22 +46,23 @@ class TelegramBookDataMessage
 		
 	}
 
-	public static function createReplyMarkup(SearchResult $searchResult)
+	public static function createReplyMarkup(SearchResultPage $searchResult)
 	{
 
 		$keyboard = [];
-		$keyboard[][] = ["text" => "Source: " . $searchResult->source, "callback_data" => "empty"];
+		//$keyboard[][] = ["text" => "Source: " . $searchResult->source, "callback_data" => "empty"];
 
 		if(session('searchResult'))
 			{
 			$cache = session('searchResult');
-			$keyboard[][] = ["text" => "Cached data: " . $cache->query . ", " . $cache->currentPage . ", " . $cache->currentPart . ", " . $cache->totalParts . ", " . $cache->totalPages  . ", " . count($cache->bookList), "callback_data" => "empty"];				
+		//	$keyboard[][] = ["text" => "Cached data: " . $cache->query . ", " . $cache->currentPage . ", " . $cache->currentPart . ", " . $cache->totalParts . ", " . $cache->totalPages  . ", " . count($cache->bookList), "callback_data" => "empty"];				
 			}
 
-		$keyboard[][] = ["text" => "Current data: " . $searchResult->query . ", " . $searchResult->currentPage . ", " . $searchResult->currentPart . ", " . $searchResult->totalParts . ", " . $searchResult->totalPages  . ", " . count($searchResult->bookList), "callback_data" => "empty"];				
+		//$keyboard[][] = ["text" => "Current data: " . $searchResult->query . ", " . $searchResult->currentPage . ", " . $searchResult->currentPart . ", " . $searchResult->totalParts . ", " . $searchResult->totalPages  . ", " . count($searchResult->bookList), "callback_data" => "empty"];				
 			
 
-		$i = (($searchResult->currentPage - 1) * 24) + (($searchResult->currentPart - 1) * 6) + 1;
+		//$i = (($searchResult->currentPage - 1) * 24) + (($searchResult->currentPart - 1) * 6) + 1;
+		$i = 1;
 		foreach($searchResult->bookList as $book)
 			{
 				$keyboard[][] = [	'text' => "$i. " . $book['title'], 
@@ -89,7 +90,7 @@ class TelegramBookDataMessage
 		}
 
 		$navButtons[2]["text"] = "\xE2\x9C\x8C"; //знак v пальцами
-
+/*
 		//кнопка вперёд
 		if (($searchResult->totalPages > $searchResult->currentPage)||($searchResult->totalParts > $searchResult->currentPart))
 			{
@@ -103,6 +104,7 @@ class TelegramBookDataMessage
 			}
 
 		$keyboard[] = $navButtons;
+*/
 
 		$replyMarkup = Telegram::replyKeyboardMarkup([
 						'inline_keyboard' => $keyboard

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Telegram;
 use App\Library;
-use App\Library\StartCommand;
-use App\Library\ChcnnParsing;
-use App\Library\TelegramBookDataMessage;
+
+use App\Library\TelegramBot\StartCommand;
+use App\Library\TelegramBot\TelegramBookDataMessage;
+
+use App\Library\BookStoreParsing\ChaconneParsing;
 
 use \App\Entity;
 use \App\Update;
@@ -126,7 +128,7 @@ class TelegramBotMessagesController extends Controller
 		$searchQuery->save();
 
 		session(['query' => $query]);
-		$searchResult = ChcnnParsing::getSearchResult($query);
+		$searchResult = ChaconneParsing::getSearchResultPage($query);
 		TelegramBookDataMessage::showSearchResult($chatId, $searchResult);
 	}
 
@@ -144,7 +146,7 @@ class TelegramBotMessagesController extends Controller
 				$query = session('query');
 				$page = $callback_data[1];
 				$part = $callback_data[2];
-				$searchResult = ChcnnParsing::getSearchResult($query, $page, $part);
+				$searchResult = ChaconneParsing::getSearchResult($query, $page, $part);
 				$replyMarkup = TelegramBookDataMessage::createReplyMarkup($searchResult);
 				$response = Telegram::editMessageText([
 									"chat_id" => $chatId, 
@@ -155,7 +157,7 @@ class TelegramBotMessagesController extends Controller
 				break;
 			case 'bookCard':
 				$code = $callback_data[1];
-				$bookCard = ChcnnParsing::getBookCard($code);
+				$bookCard = ChaconneParsing::getBookCard($code);
 				TelegramBookDataMessage::showBookCard($chatId, $bookCard);
 				break;
 			case 'storesListInStock':

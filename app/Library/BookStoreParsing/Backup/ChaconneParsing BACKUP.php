@@ -1,10 +1,10 @@
 <?php 
-namespace App\Library;
+namespace App\Library\BookStoreParsing;
 
 use Symfony\Component\DomCrawler\Crawler;
 use App\Library\SearchResult;
 use App\Library\BookCard;
-class ChcnnParsing
+class ChaconneParsing implements BookStoreParsingInterface
 {
 	const SEARCH_URL = 'https://chaconne.ru/search/?q=';
 	const BOOKCARD_URL = 'https://chaconne.ru/product/';
@@ -291,7 +291,7 @@ class ChcnnParsing
 		$coverFormat = 'н/д';
 
 		$requestURL = self::BOOKCARD_URL . $bookCode . '/';
-	//	$requestURL = __DIR__ . "/../../tests/SearchPageExample/BookCardWitcher.html";
+		//	$requestURL = __DIR__ . "/../../tests/SearchPageExample/BookCardWitcher.html";
 
 		$filters = [
 			'author' => 'a.author',
@@ -401,3 +401,5 @@ class ChcnnParsing
 	}
 
 }
+
+

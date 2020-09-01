@@ -18,7 +18,7 @@ class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testRequestShouldReturnSearchResult
+    public function testRequestShouldReturnSearchResult()
     {
 
     }
