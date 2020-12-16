@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Library\BookStoreParsing\ChaconneParsing;
+use App\Library\BookStoreParsing\ChaconneParser;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -20,7 +20,7 @@ class ChaconneParsingTest extends TestCase
     public function testGetSearchResultMustReturnSearchResult(){
 
         $searchQuery = $this->getSearchQuery();
-        $searchResult = ChaconneParsing::getSearchResultPage($searchQuery);
+        $searchResult = ChaconneParser::getSearchResultPage($searchQuery);
     
         echo "\nUsed query - " . $searchQuery . "\n";
         echo "Количество кинг - " . count($searchResult->bookList) . "\n";
@@ -28,7 +28,7 @@ class ChaconneParsingTest extends TestCase
 
         $this->assertTrue(isset($searchResult->bookList));
         $this->assertGreaterThan(0, count($searchResult->bookList));
-        $this->assertLessThanOrEqual(ChaconneParsing::MAX_BOOKS_ON_PAGE, count($searchResult->bookList));
+        $this->assertLessThanOrEqual(ChaconneParser::MAX_BOOKS_ON_PAGE, count($searchResult->bookList));
         $this->assertTrue(isset($searchResult->currentPage));
 //        $this->assertTrue(isset($searchResult->totalPages));
 //        $this->assertGreaterThan(0, $searchResult->totalPages);
@@ -48,7 +48,7 @@ class ChaconneParsingTest extends TestCase
         $code = $this->getCode();
         echo "\nUsed code - " . $code . "\n";
 
-        $bookcard = ChaconneParsing::getBookCard($code);
+        $bookcard = ChaconneParser::getBookCard($code);
 
         $propertyListString = ['author', 'title', 'code', 'coverFormat', 'countPages' ];
         $propertyListInt = ['localPrice', "internetPrice"];

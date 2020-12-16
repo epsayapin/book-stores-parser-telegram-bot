@@ -17,6 +17,7 @@ class CreateUpdatesTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->integer('update_id');
+            $table->boolean("handled")->default(false);
         });
     }
 

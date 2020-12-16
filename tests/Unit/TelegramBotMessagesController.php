@@ -3,9 +3,9 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use App\Http\Controllers\TelegramBotMessagesController as Controller;
+use App\Http\Controllers\TelegramBotMessageController as Controller;
 
-class TelegramBotMessagesController extends TestCase
+class TelegramBotMessageController extends TestCase
 {
     /**
      * A basic unit test example.

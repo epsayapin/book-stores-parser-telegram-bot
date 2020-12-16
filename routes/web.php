@@ -15,24 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/get-search-result-page', "ChaconneParsingController@getSearchResultPage");
-Route::get('/get-book-card', "ChaconneParsingController@getBookCard");
-
-
-
-Route::get('/booklists', "BookListsController@create");
-Route::get('/bookcards', "BookCardsController@create");
-
-Route::get('/longpoll', "TelegramBotMessagesController@longpoll");
-
-Route::get('/entity/{entityId}', function($entityId)
-{
+Route::prefix("test")->group(function (){
+    Route::get('/get-search-results', "TestController@getSearchResults");
+    Route::get('/get-book-card', "TestController@getBookCard");
 });
-
-Route::get('/handle', "TelegramBotMessagesController@handle")->name('handle');
-Route::get('/message', "TelegramBotMessagesController@message")->name('message');
-Route::get('/callback', "TelegramBotMessagesController@callback")->name('callback');
-
-Route::get('/storeslist', "ChcnnParsingController@getStoresListInStock");
-
-Route::post('/webhook', "TelegramBotMessagesController@webhook")->name('webhook');
